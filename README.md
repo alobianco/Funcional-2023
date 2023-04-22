@@ -4,8 +4,8 @@
 
 ## Integrantes
 
-- integrante-1 (usuario github)
-- integrante-2 (usuario github)
-- integrante-3 (usuario github)
-- integrante-4 (usuario github)
+- integrante-1 (ElianAmarilla)
+- integrante-2 (Matías-escordamaglia)
+- integrante-3 (alobianco)
+- integrante-4 (fmilossi)
 
