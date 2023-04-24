@@ -93,8 +93,7 @@ springfield = Ciudad {
 ------------------Integrante 1------------------
 {- Calcular el daño potencial de una amenaza, el cual se calcula como el nivel de poder, menos el triple de su cantidad de debilidades. -}
 dañoPotencial :: Amenaza -> Number 
---sin aplicacion parcial
-dañoPotencial amenaza = nivelDePoder amenaza - (length(debilidades amenaza)*3)
+dañoPotencial amenaza =((+nivelDePoder amenaza).(*(-3)).length.debilidades)amenaza
 
 
 ------------------Integrante 2------------------
