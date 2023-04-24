@@ -69,7 +69,7 @@ mojojojo = Amenaza{
     debilidades =["Velocidad","Superfuerza"]
 }
 princesa = Amenaza{
-    objetivo = ["Ser la unica Chica Superpoderosa"],
+    objetivo = ["Quiere ser la unica Chica Superpoderosa"],
     nivelDePoder =95,
     debilidades =["Burbujas, Golpes fuertes"]
 }
@@ -86,16 +86,17 @@ dañoPotencial :: Amenaza -> Number
 dañoPotencial amenaza = (nivelDePoder amenaza) - ((length(debilidades amenaza))*3)
 
 
-
-
-
 ------------------Integrante 2------------------
-{- Modelar todo lo necesario para saber si una amenaza puede atacar una ciudad. Si una amenaza tiene un daño potencial mayor al doble del número de habitantes de la ciudad, entonces puede atacar a la ciudad. -}
+{- Modelar todo lo necesario para saber si una amenaza puede atacar una ciudad. 
+Si una amenaza tiene un daño potencial mayor al doble del número de habitantes de la ciudad, entonces puede atacar a la ciudad. -}
 ------------------Integrante 3------------------
 {-
     Saber si una chica puede vencer a una amenaza. 
     Si tiene longitud de propósito par, ocurre si la resistencia es mayor a la mitad del daño potencial de una amenaza. 
     Si el propósito tiene longitud impar entonces, es suficiente que la resistencia sea mayor al daño potencial.
+
+    
+    
 -}
 longitudProposito :: Amenaza -> Number
 longitudProposito amenaza = sum (map length (objetivo amenaza))
@@ -103,6 +104,11 @@ longitudProposito amenaza = sum (map length (objetivo amenaza))
 
 propositoPar :: Amenaza -> Bool
 propositoPar = even.longitudProposito
+
+puedeVencer chicaSuperpoderosa amenaza
+    | propositoPar amenaza == True && nivelResistencia chicaSuperpoderosa > (dañoPotencial amenaza)/2 = True
+    | propositoPar amenaza == False && nivelResistencia chicaSuperpoderosa > (dañoPotencial amenaza) = True
+    | otherwise = False
 
 ------------------Integrante 4------------------
 {- Determinar si una amenaza es de nivel alto, lo que ocurre si tiene una cantidad par de debilidades, las mismas no incluyen kryptonita y su daño potencial es mayor a 50.-}
