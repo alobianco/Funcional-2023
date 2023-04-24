@@ -71,7 +71,7 @@ mojojojo = Amenaza{
 princesa = Amenaza{
     objetivo = ["Quiere ser la unica Chica Superpoderosa"],
     nivelDePoder =95,
-    debilidades =["Burbujas, Golpes fuertes"]
+    debilidades =["Burbujas","Golpes fuertes"]
 }
 bandaGangrena = Amenaza{
     objetivo = ["Esparcir el caos","Hacer que todos sean flojos y peleen entre ellos"],
@@ -83,7 +83,7 @@ bandaGangrena = Amenaza{
 {- Calcular el daño potencial de una amenaza, el cual se calcula como el nivel de poder, menos el triple de su cantidad de debilidades. -}
 dañoPotencial :: Amenaza -> Number 
 --sin aplicacion parcial
-dañoPotencial amenaza = (nivelDePoder amenaza) - ((length(debilidades amenaza))*3)
+dañoPotencial amenaza = nivelDePoder amenaza - (length(debilidades amenaza)*3)
 
 
 ------------------Integrante 2------------------
@@ -106,9 +106,10 @@ propositoPar :: Amenaza -> Bool
 propositoPar = even.longitudProposito
 
 puedeVencer chicaSuperpoderosa amenaza
-    | propositoPar amenaza == True && nivelResistencia chicaSuperpoderosa > (dañoPotencial amenaza)/2 = True
-    | propositoPar amenaza == False && nivelResistencia chicaSuperpoderosa > (dañoPotencial amenaza) = True
+    | propositoPar amenaza && nivelResistencia chicaSuperpoderosa > dañoPotencial amenaza/2 = True
+    | not(propositoPar amenaza) && nivelResistencia chicaSuperpoderosa > dañoPotencial amenaza = True
     | otherwise = False
 
 ------------------Integrante 4------------------
-{- Determinar si una amenaza es de nivel alto, lo que ocurre si tiene una cantidad par de debilidades, las mismas no incluyen kryptonita y su daño potencial es mayor a 50.-}
+{- Determinar si una amenaza es de nivel alto, lo que ocurre si tiene una cantidad par de debilidades, 
+las mismas no incluyen kryptonita y su daño potencial es mayor a 50.-}
