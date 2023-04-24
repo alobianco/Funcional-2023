@@ -1,6 +1,7 @@
 module Library where
 import PdePreludat
 
+
 doble :: Number -> Number
 doble numero = numero + numero
 
@@ -16,6 +17,11 @@ data Amenaza = Amenaza{
     objetivo :: [String],
     nivelDePoder :: Number,
     debilidades :: [String]
+} deriving (Show)
+
+data Ciudad = Ciudad {
+    nombreCiudad :: String,
+    poblacion :: Number
 } deriving (Show)
 
 ------------------Chicas Superpoderosas------------------
@@ -74,9 +80,17 @@ bandaGangrena = Amenaza{
 }
 
 ------------------Integrante 1------------------
+{- Calcular el daño potencial de una amenaza, el cual se calcula como el nivel de poder, menos el triple de su cantidad de debilidades. -}
+dañoPotencial :: Amenaza -> Number 
+--sin aplicacion parcial
+dañoPotencial amenaza = (nivelDePoder amenaza) - ((length(debilidades amenaza))*3)
+
+
+
+
 
 ------------------Integrante 2------------------
-
+{- Modelar todo lo necesario para saber si una amenaza puede atacar una ciudad. Si una amenaza tiene un daño potencial mayor al doble del número de habitantes de la ciudad, entonces puede atacar a la ciudad. -}
 ------------------Integrante 3------------------
 {-
     Saber si una chica puede vencer a una amenaza. 
@@ -91,3 +105,4 @@ propositoPar :: Amenaza -> Bool
 propositoPar = even.longitudProposito
 
 ------------------Integrante 4------------------
+{- Determinar si una amenaza es de nivel alto, lo que ocurre si tiene una cantidad par de debilidades, las mismas no incluyen kryptonita y su daño potencial es mayor a 50.-}
