@@ -79,6 +79,17 @@ bandaGangrena = Amenaza{
     debilidades =["Escuchar canciones de Luciano Pereyra","Kryptonita"]
 }
 
+--------------------Ciudades-------------------
+saltadilla = Ciudad {
+    nombreCiudad = "Saltadilla",
+    poblacion = 31
+} 
+
+springfield = Ciudad {
+    nombreCiudad = "Springfield",
+    poblacion = 43
+} 
+
 ------------------Integrante 1------------------
 {- Calcular el daño potencial de una amenaza, el cual se calcula como el nivel de poder, menos el triple de su cantidad de debilidades. -}
 dañoPotencial :: Amenaza -> Number 
@@ -89,6 +100,10 @@ dañoPotencial amenaza = nivelDePoder amenaza - (length(debilidades amenaza)*3)
 ------------------Integrante 2------------------
 {- Modelar todo lo necesario para saber si una amenaza puede atacar una ciudad. 
 Si una amenaza tiene un daño potencial mayor al doble del número de habitantes de la ciudad, entonces puede atacar a la ciudad. -}
+
+peligraCiudad :: Ciudad -> Amenaza -> Bool
+peligraCiudad ciudad amenaza = (poblacion ciudad*2) < dañoPotencial amenaza
+
 ------------------Integrante 3------------------
 {-
     Saber si una chica puede vencer a una amenaza. 
