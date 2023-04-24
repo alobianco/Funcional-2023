@@ -107,13 +107,11 @@ peligraCiudad ciudad amenaza = (poblacion ciudad*2) < dañoPotencial amenaza
 {-
     Saber si una chica puede vencer a una amenaza. 
     Si tiene longitud de propósito par, ocurre si la resistencia es mayor a la mitad del daño potencial de una amenaza. 
-    Si el propósito tiene longitud impar entonces, es suficiente que la resistencia sea mayor al daño potencial.
-
-    
-    
+    Si el propósito tiene longitud impar entonces, es suficiente que la resistencia sea mayor al daño potencial.    
 -}
+
 longitudProposito :: Amenaza -> Number
-longitudProposito amenaza = sum (map length (objetivo amenaza))
+longitudProposito = sum.map length.objetivo 
 
 
 propositoPar :: Amenaza -> Bool
