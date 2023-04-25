@@ -117,6 +117,7 @@ longitudProposito = sum.map length.objetivo
 propositoPar :: Amenaza -> Bool
 propositoPar = even.longitudProposito
 
+puedeVencer :: ChicasSuperpoderosas -> Amenaza -> Bool
 puedeVencer chicaSuperpoderosa amenaza
     | propositoPar amenaza && nivelResistencia chicaSuperpoderosa > dañoPotencial amenaza/2 = True
     | not(propositoPar amenaza) && nivelResistencia chicaSuperpoderosa > dañoPotencial amenaza = True
