@@ -18,7 +18,7 @@ data Persona = Persona {
 type ChicaSuperPoderosa = Persona
 
 data Amenaza = Amenaza{
-    proposito :: String,
+    proposito :: [String],
     nivelDePoder :: Number,
     debilidades :: [String]
 } deriving (Show)
@@ -73,17 +73,17 @@ silico = Persona {
 -- ====================================================================== --
 
 mojojojo = Amenaza{
-    proposito = "Destruir a las Chicas Superpoderosas",
+    proposito = ["Destruir a las Chicas Superpoderosas"],
     nivelDePoder =70,
     debilidades =["Velocidad","Superfuerza"]
 }
 princesa = Amenaza{
-    proposito = "Quiere ser la unica Chica Superpoderosa",
+    proposito = ["Quiere ser la unica Chica Superpoderosa"],
     nivelDePoder =95,
     debilidades =["Burbujas","Golpes fuertes"]
 }
 bandaGangrena = Amenaza{
-    proposito = "Esparcir el caos y hacer que todos sean flojos y peleen entre ellos",
+    proposito = ["Esparcir el caos","hacer que todos sean flojos y peleen entre ellos"],
     nivelDePoder =49,
     debilidades =["Escuchar canciones de Luciano Pereyra","Superfuerza", "Kryptonita"]
 }
