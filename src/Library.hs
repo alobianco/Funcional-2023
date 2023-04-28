@@ -102,8 +102,10 @@ saltadilla = Ciudad {
 {- Calcular el daño potencial de una amenaza, el cual se calcula como el 
     nivel de poder, menos el triple de su cantidad de debilidades. -}
 
+calcDebilidades :: Amenaza -> Number
+calcDebilidades amenaza = ((*(-3)).length.debilidades) amenaza
 dañoPotencialAmenaza :: Amenaza -> Number 
-dañoPotencialAmenaza amenaza =((+nivelDePoder amenaza).(*(-3)).length.debilidades) amenaza
+dañoPotencialAmenaza amenaza = ((+nivelDePoder amenaza).calcDebilidades) amenaza
 
 -- ====================================================================== --
 --                 Integrante 2
