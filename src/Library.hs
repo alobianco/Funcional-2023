@@ -43,8 +43,8 @@ burbuja = Persona {
     habilidades = ["Velocidad","Lanzas burbujas"],
     amigos = ["Seniorita Belo"]
 }
-beyota = Persona {
-    nombre = "Beyota",
+bellota = Persona {
+    nombre = "Bellota",
     nivelResistencia = 75,
     habilidades = ["Superfuerza","Velocidad"],
     amigos = []
@@ -83,7 +83,7 @@ princesa = Amenaza{
     debilidades =["Burbujas","Golpes fuertes"]
 }
 bandaGangrena = Amenaza{
-    proposito = ["Esparcir el caos","hacer que todos sean flojos y peleen entre ellos"],
+    proposito = ["Esparcir el caos","Hacer que todos sean flojos y peleen entre ellos"],
     nivelDePoder =49,
     debilidades =["Escuchar canciones de Luciano Pereyra","Superfuerza", "Kryptonita"]
 }
@@ -102,10 +102,10 @@ saltadilla = Ciudad {
 {- Calcular el daño potencial de una amenaza, el cual se calcula como el 
     nivel de poder, menos el triple de su cantidad de debilidades. -}
 
-calcDebilidades :: Amenaza -> Number
-calcDebilidades amenaza = ((*(-3)).length.debilidades) amenaza
-dañoPotencialAmenaza :: Amenaza -> Number 
-dañoPotencialAmenaza amenaza = ((+nivelDePoder amenaza).calcDebilidades) amenaza
+calcDebilidadesAmenaza :: Amenaza -> Number
+calcDebilidadesAmenaza = (*(-3)).length.debilidades
+danioPotencialAmenaza :: Amenaza -> Number 
+danioPotencialAmenaza amenaza = ((+nivelDePoder amenaza).calcDebilidadesAmenaza) amenaza
 
 -- ====================================================================== --
 --                 Integrante 2
@@ -115,7 +115,7 @@ Si una amenaza tiene un daño potencial mayor al doble del número de
 habitantes de la ciudad, entonces puede atacar a la ciudad. -}
 
 amenazaPuedeAtacarCiudad :: Amenaza -> Ciudad -> Bool
-amenazaPuedeAtacarCiudad amenaza ciudad = ((> (cantidadDeHabitantes ciudad * 2)) . dañoPotencialAmenaza) amenaza
+amenazaPuedeAtacarCiudad amenaza ciudad = ((> (cantidadDeHabitantes ciudad * 2)) . danioPotencialAmenaza) amenaza
 
 -- ====================================================================== --
 --                 Integrante 3
@@ -133,8 +133,8 @@ propositoEsPar = even . length . proposito
 
 puedeVencerAmenaza :: ChicaSuperPoderosa -> Amenaza -> Bool
 puedeVencerAmenaza chicasuperpoderosa amenaza
-    | propositoEsPar amenaza && (nivelResistencia chicasuperpoderosa > dañoPotencialAmenaza amenaza/2) = True
-    | not(propositoEsPar amenaza) && (nivelResistencia chicasuperpoderosa > dañoPotencialAmenaza amenaza) = True
+    | propositoEsPar amenaza && (nivelResistencia chicasuperpoderosa > danioPotencialAmenaza amenaza/2) = True
+    | not(propositoEsPar amenaza) && (nivelResistencia chicasuperpoderosa > danioPotencialAmenaza amenaza) = True
     | otherwise = False
 
 -- ====================================================================== --
@@ -152,6 +152,6 @@ tieneKryptonita (x:xs)
 
 amenazaDeNivelAlto :: Amenaza -> Bool
 amenazaDeNivelAlto amenaza = (even . length . debilidades) amenaza 
-                    && not (tieneKryptonita (debilidades amenaza)) 
-                    && dañoPotencialAmenaza amenaza > 50
+                    && (not.tieneKryptonita.debilidades) amenaza 
+                    && ((>50).danioPotencialAmenaza) amenaza
 
