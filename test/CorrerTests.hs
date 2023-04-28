@@ -1,4 +1,4 @@
-import Spec
+--import Spec
 import PdePreludat
 
 main :: IO ()
