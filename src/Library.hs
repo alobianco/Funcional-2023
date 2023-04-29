@@ -93,7 +93,7 @@ bandaGangrena = Amenaza{
 -- ====================================================================== --
 saltadilla = Ciudad {
     nombreCiudad = "Saltadilla",
-    cantidadDeHabitantes = 31
+    cantidadDeHabitantes = 21
 } 
 
 -- ====================================================================== --
@@ -129,7 +129,7 @@ amenazaPuedeAtacarCiudad amenaza ciudad = ((> (cantidadDeHabitantes ciudad * 2))
 -}
 
 propositoEsPar :: Amenaza -> Bool
-propositoEsPar = even . length . proposito
+propositoEsPar = even.sum.map length.proposito
 
 puedeVencerAmenaza :: ChicaSuperPoderosa -> Amenaza -> Bool
 puedeVencerAmenaza chicasuperpoderosa amenaza

@@ -10,19 +10,23 @@ correrTests = hspec $ do
       doble 1 `shouldBe` 2 
   describe "Test Integrante 1" $ do
     it "Punto de Integrante 1 funciona correctamente" $ do
-      danioPotencialAmenaza mojojojo `shouldBe` 64     
+      danioPotencialAmenaza mojojojo `shouldBe` 64   
+      danioPotencialAmenaza princesa `shouldBe` 89 
+      danioPotencialAmenaza bandaGangrena `shouldBe` 40   
   describe "Test Integrante 2" $ do
     it "Punto de Integrante 2 funciona correctamente" $ do
        amenazaPuedeAtacarCiudad bandaGangrena saltadilla `shouldBe` False
        amenazaPuedeAtacarCiudad mojojojo saltadilla `shouldBe` True
+       amenazaPuedeAtacarCiudad princesa saltadilla `shouldBe` True
   describe "Test Integrante 3" $ do
     it "Punto de Integrante 3 funciona correctamente" $ do
        puedeVencerAmenaza silico bandaGangrena `shouldBe` True
-       puedeVencerAmenaza burbuja mojojojo `shouldBe` False
+       puedeVencerAmenaza burbuja princesa `shouldBe` False
        puedeVencerAmenaza bellota mojojojo `shouldBe` True
+       puedeVencerAmenaza bombon mojojojo `shouldBe` True
   describe "Test Integrante 4" $ do
     it "Punto de Integrante 4 funciona correctamente" $ do
        tieneKryptonita (debilidades bandaGangrena) `shouldBe` True
-       amenazaDeNivelAlto mojojojo `shouldBe` True
+       amenazaDeNivelAlto princesa `shouldBe` True
        amenazaDeNivelAlto bandaGangrena `shouldBe` False
        
