@@ -78,7 +78,7 @@ mojojojo = Amenaza{
     debilidades =["Velocidad","Superfuerza"]
 }
 princesa = Amenaza{
-    proposito = ["Quiere ser la unica Chica Superpoderosa"],
+    proposito = ["Ser la unica Chica Superpoderosa"],
     nivelDePoder =95,
     debilidades =["Burbujas","Golpes fuertes"]
 }
@@ -134,7 +134,7 @@ propositoEsPar = even.sum.map length.proposito
 puedeVencerAmenaza :: ChicaSuperPoderosa -> Amenaza -> Bool
 puedeVencerAmenaza chicasuperpoderosa amenaza
     | propositoEsPar amenaza && (nivelResistencia chicasuperpoderosa > danioPotencialAmenaza amenaza/2) = True
-    | not(propositoEsPar amenaza) && (nivelResistencia chicasuperpoderosa > danioPotencialAmenaza amenaza) = True
+    | (not.propositoEsPar) amenaza && (nivelResistencia chicasuperpoderosa > danioPotencialAmenaza amenaza) = True
     | otherwise = False
 
 -- ====================================================================== --
