@@ -99,10 +99,13 @@ saltadilla = Ciudad {
 {- Calcular el daño potencial de una amenaza, el cual se calcula como el 
     nivel de poder, menos el triple de su cantidad de debilidades. -}
 
-calcDebilidadesAmenaza :: Amenaza -> Number
-calcDebilidadesAmenaza = (*(-3)).length.debilidades
+longitudDe x = length.x
+
+productoriaDebilidades:: Amenaza -> Number
+productoriaDebilidades = (*(-3)).longitudDe debilidades
+
 danioPotencialAmenaza :: Amenaza -> Number 
-danioPotencialAmenaza amenaza = ((+nivelDePoder amenaza).calcDebilidadesAmenaza) amenaza
+danioPotencialAmenaza amenaza = ((+nivelDePoder amenaza).productoriaDebilidades) amenaza
 
 -- ====================================================================== --
 --                 Integrante 2
@@ -112,7 +115,8 @@ Si una amenaza tiene un daño potencial mayor al doble del número de
 habitantes de la ciudad, entonces puede atacar a la ciudad. -}
 
 amenazaPuedeAtacarCiudad :: Amenaza -> Ciudad -> Bool
-amenazaPuedeAtacarCiudad amenaza ciudad = ((> (cantidadDeHabitantes ciudad * 2)) . danioPotencialAmenaza) amenaza
+amenazaPuedeAtacarCiudad amenaza ciudad = danioPotencialAmenaza amenaza < (2*cantidadDeHabitantes ciudad)
+--amenazaPuedeAtacarCiudad amenaza ciudad = ((> (cantidadDeHabitantes ciudad * 2)) . danioPotencialAmenaza) amenaza
 
 -- ====================================================================== --
 --                 Integrante 3
@@ -126,7 +130,7 @@ amenazaPuedeAtacarCiudad amenaza ciudad = ((> (cantidadDeHabitantes ciudad * 2))
 -}
 
 propositoEsPar :: Amenaza -> Bool
-propositoEsPar = even.length.proposito
+propositoEsPar = even.longitudDe proposito 
 
 mitadDeDanio :: Amenaza -> Number
 mitadDeDanio = (/2).danioPotencialAmenaza 
@@ -156,7 +160,7 @@ tieneKryptonita (x:xs)
   | otherwise = tieneKryptonita xs
 
 amenazaDeNivelAlto :: Amenaza -> Bool
-amenazaDeNivelAlto amenaza = (even . length . debilidades) amenaza 
+amenazaDeNivelAlto amenaza = (even . longitudDe debilidades) amenaza 
                     && (not.tieneKryptonita.debilidades) amenaza 
                     && ((>50).danioPotencialAmenaza) amenaza
 
