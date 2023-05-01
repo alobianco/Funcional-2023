@@ -1,9 +1,6 @@
 module Library where
 import PdePreludat
 
-doble :: Number -> Number
-doble numero = numero + numero
-
 -- ====================================================================== --
 --                  MODELADO
 -- ====================================================================== --
@@ -18,7 +15,7 @@ data Persona = Persona {
 type ChicaSuperPoderosa = Persona
 
 data Amenaza = Amenaza{
-    proposito :: [String],
+    proposito :: String,
     nivelDePoder :: Number,
     debilidades :: [String]
 } deriving (Show)
@@ -73,17 +70,17 @@ silico = Persona {
 -- ====================================================================== --
 
 mojojojo = Amenaza{
-    proposito = ["Destruir a las Chicas Superpoderosas"],
+    proposito = "Destruir a las Chicas Superpoderosas",
     nivelDePoder =70,
     debilidades =["Velocidad","Superfuerza"]
 }
 princesa = Amenaza{
-    proposito = ["Quiere ser la unica Chica Superpoderosa"],
+    proposito = "Quiere ser la unica Chica Superpoderosa",
     nivelDePoder =95,
     debilidades =["Burbujas","Golpes fuertes"]
 }
 bandaGangrena = Amenaza{
-    proposito = ["Esparcir el caos","Hacer que todos sean flojos y peleen entre ellos"],
+    proposito = "Esparcir el caos y Hacer que todos sean flojos y peleen entre ellos",
     nivelDePoder =49,
     debilidades =["Escuchar canciones de Luciano Pereyra","Superfuerza", "Kryptonita"]
 }
@@ -129,12 +126,20 @@ amenazaPuedeAtacarCiudad amenaza ciudad = ((> (cantidadDeHabitantes ciudad * 2))
 -}
 
 propositoEsPar :: Amenaza -> Bool
-propositoEsPar = even.sum.map length.proposito
+propositoEsPar = even.length.proposito
+
+mitadDeDanio :: Amenaza -> Number
+mitadDeDanio = (/2).danioPotencialAmenaza 
+
+resistenciaMasQueMitadDeDanio :: ChicaSuperPoderosa -> Amenaza -> Bool
+resistenciaMasQueMitadDeDanio chicasuperpoderosa amenaza = nivelResistencia chicasuperpoderosa > mitadDeDanio amenaza
+resistenciaMasQueDanio :: ChicaSuperPoderosa -> Amenaza -> Bool
+resistenciaMasQueDanio chicasuperpoderosa amenaza = nivelResistencia chicasuperpoderosa > danioPotencialAmenaza amenaza
 
 puedeVencerAmenaza :: ChicaSuperPoderosa -> Amenaza -> Bool
 puedeVencerAmenaza chicasuperpoderosa amenaza
-    | propositoEsPar amenaza && (nivelResistencia chicasuperpoderosa > danioPotencialAmenaza amenaza/2) = True
-    | not(propositoEsPar amenaza) && (nivelResistencia chicasuperpoderosa > danioPotencialAmenaza amenaza) = True
+    | propositoEsPar amenaza = resistenciaMasQueMitadDeDanio chicasuperpoderosa amenaza
+    | not(propositoEsPar amenaza) = resistenciaMasQueDanio chicasuperpoderosa amenaza
     | otherwise = False
 
 -- ====================================================================== --

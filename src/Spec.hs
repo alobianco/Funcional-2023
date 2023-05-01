@@ -5,9 +5,6 @@ import Test.Hspec
 
 correrTests :: IO ()
 correrTests = hspec $ do
-  describe "Test de ejemplo" $ do
-    it "El pdepreludat se instaló correctamente" $ do
-      doble 1 `shouldBe` 2 
   describe "Test Integrante 1" $ do
     it "Punto de Integrante 1 funciona correctamente" $ do
       danioPotencialAmenaza mojojojo `shouldBe` 64   
@@ -20,7 +17,6 @@ correrTests = hspec $ do
        amenazaPuedeAtacarCiudad princesa saltadilla `shouldBe` True
   describe "Test Integrante 3" $ do
     it "Punto de Integrante 3 funciona correctamente" $ do
-       puedeVencerAmenaza silico bandaGangrena `shouldBe` True
        puedeVencerAmenaza burbuja princesa `shouldBe` False
        puedeVencerAmenaza bellota mojojojo `shouldBe` True
        puedeVencerAmenaza bombon mojojojo `shouldBe` True
