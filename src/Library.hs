@@ -115,8 +115,8 @@ Si una amenaza tiene un daño potencial mayor al doble del número de
 habitantes de la ciudad, entonces puede atacar a la ciudad. -}
 
 amenazaPuedeAtacarCiudad :: Amenaza -> Ciudad -> Bool
-amenazaPuedeAtacarCiudad amenaza ciudad = danioPotencialAmenaza amenaza < (2*cantidadDeHabitantes ciudad)
---amenazaPuedeAtacarCiudad amenaza ciudad = ((> (cantidadDeHabitantes ciudad * 2)) . danioPotencialAmenaza) amenaza
+--amenazaPuedeAtacarCiudad amenaza ciudad = danioPotencialAmenaza amenaza < (2*cantidadDeHabitantes ciudad)
+amenazaPuedeAtacarCiudad amenaza ciudad = ((> (cantidadDeHabitantes ciudad * 2)) . danioPotencialAmenaza) amenaza
 
 -- ====================================================================== --
 --                 Integrante 3
@@ -130,7 +130,7 @@ amenazaPuedeAtacarCiudad amenaza ciudad = danioPotencialAmenaza amenaza < (2*can
 -}
 
 propositoEsPar :: Amenaza -> Bool
-propositoEsPar = even.longitudDe proposito 
+propositoEsPar = even.length.proposito 
 
 mitadDeDanio :: Amenaza -> Number
 mitadDeDanio = (/2).danioPotencialAmenaza 
