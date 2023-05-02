@@ -17,6 +17,7 @@ correrTests = hspec $ do
        amenazaPuedeAtacarCiudad princesa saltadilla `shouldBe` True
   describe "Test Integrante 3" $ do
     it "Punto de Integrante 3 funciona correctamente" $ do
+       princesa `shouldSatisfy` propositoEsPar
        puedeVencerAmenaza burbuja princesa `shouldBe` False
        mojojojo `shouldSatisfy` propositoEsPar
        puedeVencerAmenaza bombon mojojojo `shouldBe` True

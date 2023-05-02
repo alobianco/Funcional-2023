@@ -75,7 +75,7 @@ mojojojo = Amenaza{
     debilidades =["Velocidad","Superfuerza"]
 }
 princesa = Amenaza{
-    proposito = "Quiere ser la unica Chica Superpoderosa",
+    proposito = "Ser la unica Chica Superpoderosa",
     nivelDePoder =95,
     debilidades =["Burbujas","Golpes fuertes"]
 }
@@ -115,7 +115,7 @@ Si una amenaza tiene un daño potencial mayor al doble del número de
 habitantes de la ciudad, entonces puede atacar a la ciudad. -}
 
 amenazaPuedeAtacarCiudad :: Amenaza -> Ciudad -> Bool
---amenazaPuedeAtacarCiudad amenaza ciudad = danioPotencialAmenaza amenaza < (2*cantidadDeHabitantes ciudad)
+--amenazaPuedeAtacarCiudad amenaza ciudad = (cantidadDeHabitantes ciudad*2) < dañoPotencial amenaza
 amenazaPuedeAtacarCiudad amenaza ciudad = ((> (cantidadDeHabitantes ciudad * 2)) . danioPotencialAmenaza) amenaza
 
 -- ====================================================================== --
@@ -130,7 +130,7 @@ amenazaPuedeAtacarCiudad amenaza ciudad = ((> (cantidadDeHabitantes ciudad * 2))
 -}
 
 propositoEsPar :: Amenaza -> Bool
-propositoEsPar = even.length.proposito 
+propositoEsPar = even.longitudDe proposito
 
 mitadDeDanio :: Amenaza -> Number
 mitadDeDanio = (/2).danioPotencialAmenaza 
