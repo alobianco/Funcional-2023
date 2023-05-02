@@ -114,9 +114,8 @@ danioPotencialAmenaza amenaza = ((+nivelDePoder amenaza).productoriaDebilidades)
 Si una amenaza tiene un daño potencial mayor al doble del número de 
 habitantes de la ciudad, entonces puede atacar a la ciudad. -}
 
-amenazaPuedeAtacarCiudad :: Amenaza -> Ciudad -> Bool
---amenazaPuedeAtacarCiudad amenaza ciudad = (cantidadDeHabitantes ciudad*2) < dañoPotencial amenaza
-amenazaPuedeAtacarCiudad amenaza ciudad = ((> (cantidadDeHabitantes ciudad * 2)) . danioPotencialAmenaza) amenaza
+amenazaPuedeAtacarCiudad :: Ciudad -> Amenaza -> Bool
+amenazaPuedeAtacarCiudad ciudad = (> cantidadDeHabitantes ciudad * 2) . danioPotencialAmenaza
 
 -- ====================================================================== --
 --                 Integrante 3
