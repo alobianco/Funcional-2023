@@ -153,10 +153,7 @@ puedeVencerAmenaza chicasuperpoderosa amenaza
     y su daño potencial es mayor a 50.-}
 
 tieneKryptonita :: [String] -> Bool
-tieneKryptonita [] = False
-tieneKryptonita (x:xs)
-  | x == "Kryptonita" = True
-  | otherwise = tieneKryptonita xs
+tieneKryptonita = elem "Kriptonita"
 
 amenazaDeNivelAlto :: Amenaza -> Bool
 amenazaDeNivelAlto amenaza = (even . longitudDe debilidades) amenaza 
