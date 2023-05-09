@@ -115,7 +115,7 @@ Si una amenaza tiene un daño potencial mayor al doble del número de
 habitantes de la ciudad, entonces puede atacar a la ciudad. -}
 
 amenazaPuedeAtacarCiudad :: Ciudad -> Amenaza -> Bool
-amenazaPuedeAtacarCiudad ciudad = (> cantidadDeHabitantes ciudad * 2) . danioPotencialAmenaza
+amenazaPuedeAtacarCiudad ciudad = ($(*2).cantidadDeHabitantes $ciudad).(>) . danioPotencialAmenaza
 
 -- ====================================================================== --
 --                 Integrante 3
