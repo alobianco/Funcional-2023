@@ -99,13 +99,11 @@ saltadilla = Ciudad {
 {- Calcular el daño potencial de una amenaza, el cual se calcula como el 
     nivel de poder, menos el triple de su cantidad de debilidades. -}
 
-longitudDe x = length.x
-
-productoriaDebilidades:: Amenaza -> Number
-productoriaDebilidades = (*(-3)).longitudDe debilidades
+operacionDeDebilidades :: (Number -> c) -> Amenaza -> c
+operacionDeDebilidades operacion = operacion.length.debilidades
 
 danioPotencialAmenaza :: Amenaza -> Number 
-danioPotencialAmenaza amenaza = ((+nivelDePoder amenaza).productoriaDebilidades) amenaza
+danioPotencialAmenaza amenaza = (+nivelDePoder amenaza).operacionDeDebilidades (*(-3)) $amenaza
 
 -- ====================================================================== --
 --                 Integrante 2
@@ -115,7 +113,7 @@ Si una amenaza tiene un daño potencial mayor al doble del número de
 habitantes de la ciudad, entonces puede atacar a la ciudad. -}
 
 amenazaPuedeAtacarCiudad :: Ciudad -> Amenaza -> Bool
-amenazaPuedeAtacarCiudad ciudad = ($(*2).cantidadDeHabitantes $ciudad).(>) . danioPotencialAmenaza
+amenazaPuedeAtacarCiudad ciudad = ($(*2).cantidadDeHabitantes $ciudad).(>).danioPotencialAmenaza
 
 -- ====================================================================== --
 --                 Integrante 3
@@ -129,7 +127,7 @@ amenazaPuedeAtacarCiudad ciudad = ($(*2).cantidadDeHabitantes $ciudad).(>) . dan
 -}
 
 propositoEsPar :: Amenaza -> Bool
-propositoEsPar = even.longitudDe proposito
+propositoEsPar = even.length.proposito
 
 mitadDeDanio :: Amenaza -> Number
 mitadDeDanio = (/2).danioPotencialAmenaza 
@@ -152,11 +150,11 @@ puedeVencerAmenaza chicasuperpoderosa amenaza
     una cantidad par de debilidades, las mismas no incluyen kryptonita 
     y su daño potencial es mayor a 50.-}
 
-tieneKryptonita :: [String] -> Bool
+
 tieneKryptonita = elem "Kriptonita"
 
 amenazaDeNivelAlto :: Amenaza -> Bool
-amenazaDeNivelAlto amenaza = (even . longitudDe debilidades) amenaza 
-                    && (not.tieneKryptonita.debilidades) amenaza 
+amenazaDeNivelAlto amenaza = operacionDeDebilidades even amenaza
+                    && (not.tieneKryptonita.debilidades) amenaza
                     && ((>50).danioPotencialAmenaza) amenaza
 
