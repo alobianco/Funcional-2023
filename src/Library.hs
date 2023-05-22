@@ -32,7 +32,7 @@ data Ciudad = Ciudad {
 bombon = Persona {
     nombre = "Bombon",
     nivelResistencia = 55,
-    habilidades = ["Escuchar canciones de Luciano Pereyra","Dar golpes fuertes"],
+    habilidades = ["Escuchar canciones de Luciano Pereyra","Golpes fuertes"],
     amigos = ["Senior Cerdo", "Silico"]
 }
 burbuja = Persona {
@@ -95,7 +95,7 @@ bandaGangrena = Amenaza{
 saltadilla = Ciudad {
     nombreCiudad = "Saltadilla",
     cantidadDeHabitantes = 21
-} 
+}
 
 -- ====================================================================== --
 --                 Integrante 1
@@ -106,7 +106,7 @@ saltadilla = Ciudad {
 operacionDeDebilidades :: (Number -> c) -> Amenaza -> c
 operacionDeDebilidades operacion = operacion.length.debilidades
 
-danioPotencialAmenaza :: Amenaza -> Number 
+danioPotencialAmenaza :: Amenaza -> Number
 danioPotencialAmenaza amenaza = (+nivelDePoder amenaza).operacionDeDebilidades (*(-3)) $amenaza
 
 -- ====================================================================== --
@@ -132,7 +132,7 @@ propositoEsPar :: Amenaza -> Bool
 propositoEsPar = even.length.proposito
 
 mitadDeDanio :: Amenaza -> Number
-mitadDeDanio = (/2).danioPotencialAmenaza 
+mitadDeDanio = (/2).danioPotencialAmenaza
 
 resistenciaMasQueMitadDeDanio :: ChicaSuperPoderosa -> Amenaza -> Bool
 resistenciaMasQueMitadDeDanio chicasuperpoderosa amenaza = nivelResistencia chicasuperpoderosa > mitadDeDanio amenaza
@@ -160,6 +160,13 @@ amenazaDeNivelAlto amenaza = operacionDeDebilidades even amenaza
 -- ====================================================================== --
  {-Determinar si una amenaza es invulnerable para una chica, lo cual ocurre 
  si la chica no tiene habilidades que sean debilidad de la amenaza-}
+
+chequeoElem :: [String] -> [String] -> [Bool]
+chequeoElem [] _ = []
+chequeoElem _ [] = []
+chequeoElem (x:xs) (y:ys) = elem x (y:ys) : chequeoElem xs (y:ys)
+amenazaInvulnerable :: ChicaSuperPoderosa -> Amenaza -> Bool
+amenazaInvulnerable chicasuperpoderosa amenaza = not.or $ chequeoElem (habilidades chicasuperpoderosa) (debilidades amenaza)
 
 -- ====================================================================== --
 --                 Integrante 2 - Entrada en calor
@@ -190,6 +197,7 @@ con B y más de una habilidad.-}
     para esta bebida se conoce las personas con las que se está tomando, y 
     las que no sean amigas, se agregan como tales.-}
 
+consumirSustX chicasuperpoderosa = chicasuperpoderosa { nivelResistencia = 0 } 
 -- ====================================================================== --
 --                 Integrante 2 - Yendo al nutricionista
 -- ====================================================================== --
