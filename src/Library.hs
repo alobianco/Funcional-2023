@@ -260,21 +260,20 @@ En ninguno de los casos la población puede quedar negativa, a lo sumo la ciudad
 -}
 calculoEvac :: Amenaza -> Number -> (Number -> Number) -> Number
 calculoEvac amenaza x f 
-    | x - aux >= 0 = x - aux
+    | x - calc >= 0 = x - calc
     | otherwise = 0
-    where aux = f (div (danioPotencialAmenaza amenaza) 10)
+    where calc = f (div (danioPotencialAmenaza amenaza) 10)
 
 rumorAtaque :: Amenaza -> Ciudad -> Ciudad
 rumorAtaque amenaza ciudad  | amenazaPuedeAtacarCiudad ciudad amenaza = efectoSecundario amenaza ciudad
                             | otherwise = ciudad {cantidadDeHabitantes= calculoEvac amenaza (cantidadDeHabitantes ciudad) (*1)}
 
 efectoSecundario ::  Amenaza  -> Ciudad -> Ciudad
-efectoSecundario amenaza (Ciudad nom canthabit) | nombreA amenaza == "Mojo Jojo" = aux nom 2 1
-                                                | nombreA amenaza == "Banda Gangrena" = aux "Gangrena City" 1 2
-                                                | nombreA amenaza == "Princesa" = aux nom 1 1
-                                                | otherwise = aux nom 1 1                                              
-                                                where aux nombre numA numB = Ciudad nombre (calculoEvac amenaza canthabit (*numA)*numB)
-                                            -- !!!AVISO!!! Los nombres "aux" deben ser modificados 
+efectoSecundario amenaza (Ciudad nom canthabit) | nombreA amenaza == "Mojo Jojo" = city nom 2 1
+                                                | nombreA amenaza == "Banda Gangrena" = city "Gangrena City" 1 2
+                                                | nombreA amenaza == "Princesa" = city nom 1 1
+                                                | otherwise = city nom 1 1                                              
+                                                where city nombre numA numB = Ciudad nombre (calculoEvac amenaza canthabit (*numA)*numB)
 -- ====================================================================== --
 --                 Todos - DarlePlay
 -- ====================================================================== --
