@@ -247,30 +247,45 @@ a quien la ingiera. Si no tiene habilidades, no causa ningún efecto.-}
 --                 Todos - Mi villano favorito
 -- ====================================================================== --
 {-
-Queremos representar el efecto que tiene un villano al atacar una ciudad. Cuando un villano intenta atacar una ciudad, pueda o no y sólo por motivos del rumor, su población escapa según una cantidad igual a la décima parte de su daño potencial (división entera). Además, si el villano efectivamente puede atacar la misma antes de esta fuga, luego de la misma se aplica un efecto adicional que depende del villano. Antes no lo sabíamos, pero los villanos pueden tener distintos efectos:
-Mojo Jojo hace correr el rumor de un segundo ataque, ya que asume que las Chicas Superpoderosas van a acudir más rápidamente y su objetivo es destruirlas, por lo que se fuga el doble de población.
-Princesa no hace nada, ya que su objetivo es ser la única Chica Superpoderosa y no le interesa tanto afectar a la ciudad.
-Banda Gangrena cambia el nombre de la ciudad por “Gangrena City” y duplica a la población, ya que clona a todos los habitantes para que todo sea más caótico.
+Queremos representar el efecto que tiene un villano al atacar una ciudad. Cuando un villano intenta atacar una ciudad, 
+pueda o no y sólo por motivos del rumor, su población escapa según una cantidad igual a la décima parte de su daño potencial (división entera). 
+Además, si el villano efectivamente puede atacar la misma antes de esta fuga, luego de la misma se aplica un efecto adicional 
+que depende del villano. Antes no lo sabíamos, pero los villanos pueden tener distintos efectos:
+    +Mojo Jojo hace correr el rumor de un segundo ataque, ya que asume que las Chicas Superpoderosas van a acudir más rápidamente 
+    y su objetivo es destruirlas, por lo que se fuga el doble de población.
+    +Princesa no hace nada, ya que su objetivo es ser la única Chica Superpoderosa y no le interesa tanto afectar a la ciudad.
+    +Banda Gangrena cambia el nombre de la ciudad por “Gangrena City” y duplica a la población, ya que clona a todos los habitantes 
+    para que todo sea más caótico.
 En ninguno de los casos la población puede quedar negativa, a lo sumo la ciudad quedará desierta (con población de 0).
 -}
 calculoEvac :: Amenaza -> Number -> (Number -> Number) -> Number
-calculoEvac amenaza x f | x - f (div (danioPotencialAmenaza amenaza) 10) >= 0 = x - f (div (danioPotencialAmenaza amenaza) 10)
-                        | otherwise = 0
+calculoEvac amenaza x f 
+    | x - aux >= 0 = x - aux
+    | otherwise = 0
+    where aux = f (div (danioPotencialAmenaza amenaza) 10)
+
 rumorAtaque :: Amenaza -> Ciudad -> Ciudad
-rumorAtaque amenaza (Ciudad nom canthabit)  | amenazaPuedeAtacarCiudad (Ciudad nom canthabit) amenaza = efectoSecundario (Ciudad nom canthabit) amenaza
-                                            | otherwise = Ciudad nom (calculoEvac amenaza canthabit (*1))
-efectoSecundario :: Ciudad -> Amenaza -> Ciudad
-efectoSecundario (Ciudad nom canthabit) amenaza | nombreA amenaza == "Mojo Jojo" = Ciudad nom (calculoEvac amenaza canthabit (*2))
-                                                | nombreA amenaza == "Banda Gangrena" = Ciudad "Gangrena City" (calculoEvac amenaza canthabit (*1)*2)
-                                                | nombreA amenaza == "Princesa" = Ciudad nom (calculoEvac amenaza canthabit (*1))
-                                                | otherwise = Ciudad nom (calculoEvac amenaza canthabit (*1))
+rumorAtaque amenaza ciudad  | amenazaPuedeAtacarCiudad ciudad amenaza = efectoSecundario amenaza ciudad
+                            | otherwise = ciudad {cantidadDeHabitantes= calculoEvac amenaza (cantidadDeHabitantes ciudad) (*1)}
+
+efectoSecundario ::  Amenaza  -> Ciudad -> Ciudad
+efectoSecundario amenaza (Ciudad nom canthabit) | nombreA amenaza == "Mojo Jojo" = aux nom 2 1
+                                                | nombreA amenaza == "Banda Gangrena" = aux "Gangrena City" 1 2
+                                                | nombreA amenaza == "Princesa" = aux nom 1 1
+                                                | otherwise = aux nom 1 1                                              
+                                                where aux nombre numA numB = Ciudad nombre (calculoEvac amenaza canthabit (*numA)*numB)
+                                            -- !!!AVISO!!! Los nombres "aux" deben ser modificados 
 -- ====================================================================== --
 --                 Todos - DarlePlay
 -- ====================================================================== --
 {-
-Para contarnos la historia de las aventuras de estas chicas, esta serie está dividida en capítulos. Un capítulo incluye a un villano, el nombre de una ciudad que pretende atacar, una Chica Superpoderosa que la defiende y alimentos.
+Para contarnos la historia de las aventuras de estas chicas, esta serie está dividida en capítulos. 
+Un capítulo incluye a un villano, el nombre de una ciudad que pretende atacar, una Chica Superpoderosa que la defiende y alimentos.
 
-Queremos poder darlePlay a un capítulo para saber cómo afecta a una ciudad dada, que puede o no coincidir con la mencionada en el capítulo. Un villano intentará atacar a la ciudad (si es la mencionada en el capítulo) siempre que la Chica Superpoderosa, habiendo consumido sus alimentos, no pueda vencerlo. Como resultado de darlePlay a un capítulo y ciudad, vamos a conocer cómo cambia la ciudad que indicamos.
+Queremos poder darlePlay a un capítulo para saber cómo afecta a una ciudad dada, que puede o no coincidir 
+con la mencionada en el capítulo. Un villano intentará atacar a la ciudad (si es la mencionada en el capítulo) 
+siempre que la Chica Superpoderosa, habiendo consumido sus alimentos, no pueda vencerlo. Como resultado
+ de darlePlay a un capítulo y ciudad, vamos a conocer cómo cambia la ciudad que indicamos.
 Aclaración: Un capítulo sólo puede afectar a la ciudad que nombra. Si es otra ciudad y no la que se nombra en el capítulo, entonces no le hace nada..
 
 A su vez, los capítulos están agrupados por temporada. Una temporada no es más que una serie ordenada de capítulos. Como somos grandes maratoneros de series copadas y nos gusta que todo tenga un hilo conductor, queremos saber cómo afecta una temporada a una ciudad. Para mantener el mencionado hilo conductor, la ciudad inicia con el estado en que quedó al finalizar el capítulo anterior.
