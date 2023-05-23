@@ -176,7 +176,8 @@ que es aquella que tenga más nivel de poder.-}
 
 
 --amenazaPreponderante lista = (maximum.map nivelDePoder) lista
-amenazaPreponderante lista = unwords.map nombreA.filter ((==(maximum.map nivelDePoder) lista).nivelDePoder) $lista
+
+amenazaPreponderante amenazas = unwords.map nombreA.filter ((==(maximum.map nivelDePoder) amenazas).nivelDePoder) $amenazas
 -- ====================================================================== --
 --                 Integrante 3 - Entrada en calor
 -- ====================================================================== --
@@ -204,11 +205,11 @@ sinRepetir [] = []
 sinRepetir (x:xs) = x : sinRepetir (filter (/=x) xs)
 nuevosAmigos :: [String] -> [Persona] -> [String]
 nuevosAmigos (x:xs) [] = x:xs
-nuevosAmigos (x:xs) (y:ys) = sinRepetir $ (++) (x:xs) (generarLista (y:ys))
+nuevosAmigos (x:xs) (y:ys) = sinRepetir (x:xs) ++ generarLista (y:ys)
 
 tomarCerveza :: Persona -> [Persona] -> Persona 
-tomarCerveza (Persona nombre nivelResistencia habilidades amigos) [] = Persona nombre nivelResistencia habilidades amigos
-tomarCerveza (Persona nombre nivelResistencia habilidades amigos) (x:xs)  = Persona nombre nivelResistencia habilidades (nuevosAmigos amigos $ (x:xs))
+tomarCerveza (Persona nom resis hab amigos) [] = Persona nom resis hab amigos
+tomarCerveza (Persona nom resis hab amigos) (x:xs)  = Persona nom resis hab (nuevosAmigos amigos (x:xs))
 -- ====================================================================== --
 --                 Integrante 2 - Yendo al nutricionista
 -- ====================================================================== --
@@ -218,6 +219,11 @@ tanto como la cantidad de letras que tenga el sabor. Por ejemplo, si alguien
 toma saborizador de Fresa, su resistencia se reduciría en 5 unidades.
 + El querido ferne’, donde al consumirlo obtiene automáticamente la habilidad 
 de “Chef de Asados”. Si ya la tiene, no se agrega.-}
+
+tomarFerne :: Persona -> Persona
+tomarFerne persona
+    |elem "Chef de Asados"  $ habilidades persona = persona
+    |otherwise = persona {habilidades =  "Chef de Asados" : habilidades persona }
 
 -- ====================================================================== --
 --                 Integrante 3 - Yendo al nutricionista
