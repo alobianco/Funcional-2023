@@ -198,6 +198,17 @@ con B y más de una habilidad.-}
     las que no sean amigas, se agregan como tales.-}
 
 consumirSustX chicasuperpoderosa = chicasuperpoderosa { nivelResistencia = 0 } 
+generarLista [] = []
+generarLista (y:ys) = map nombre (y:ys)
+sinRepetir [] = []
+sinRepetir (x:xs) = x : sinRepetir (filter (/=x) xs)
+nuevosAmigos :: [String] -> [Persona] -> [String]
+nuevosAmigos (x:xs) [] = x:xs
+nuevosAmigos (x:xs) (y:ys) = sinRepetir $ (++) (x:xs) (generarLista (y:ys))
+
+tomarCerveza :: Persona -> [Persona] -> Persona 
+tomarCerveza (Persona nombre nivelResistencia habilidades amigos) [] = Persona nombre nivelResistencia habilidades amigos
+tomarCerveza (Persona nombre nivelResistencia habilidades amigos) (x:xs)  = Persona nombre nivelResistencia habilidades (nuevosAmigos amigos $ (x:xs))
 -- ====================================================================== --
 --                 Integrante 2 - Yendo al nutricionista
 -- ====================================================================== --
