@@ -205,6 +205,8 @@ sinRepetir [] = []
 sinRepetir (x:xs) = x : sinRepetir (filter (/=x) xs)
 nuevosAmigos :: [String] -> [Persona] -> [String]
 nuevosAmigos (x:xs) [] = x:xs
+nuevosAmigos [] (x:xs) = generarLista (x:xs)
+nuevosAmigos [] [] = []
 nuevosAmigos (x:xs) (y:ys) = sinRepetir (x:xs) ++ generarLista (y:ys)
 
 tomarCerveza :: Persona -> [Persona] -> Persona 
@@ -251,7 +253,17 @@ Princesa no hace nada, ya que su objetivo es ser la única Chica Superpoderosa y
 Banda Gangrena cambia el nombre de la ciudad por “Gangrena City” y duplica a la población, ya que clona a todos los habitantes para que todo sea más caótico.
 En ninguno de los casos la población puede quedar negativa, a lo sumo la ciudad quedará desierta (con población de 0).
 -}
-
+calculoEvac :: Amenaza -> Number -> (Number -> Number) -> Number
+calculoEvac amenaza x f | x - f (div (danioPotencialAmenaza amenaza) 10) >= 0 = x - f (div (danioPotencialAmenaza amenaza) 10)
+                        | otherwise = 0
+rumorAtaque :: Amenaza -> Ciudad -> Ciudad
+rumorAtaque amenaza (Ciudad nom canthabit)  | amenazaPuedeAtacarCiudad (Ciudad nom canthabit) amenaza = efectoSecundario (Ciudad nom canthabit) amenaza
+                                            | otherwise = Ciudad nom (calculoEvac amenaza canthabit (*1))
+efectoSecundario :: Ciudad -> Amenaza -> Ciudad
+efectoSecundario (Ciudad nom canthabit) amenaza | nombreA amenaza == "Mojo Jojo" = Ciudad nom (calculoEvac amenaza canthabit (*2))
+                                                | nombreA amenaza == "Banda Gangrena" = Ciudad "Gangrena City" (calculoEvac amenaza canthabit (*1)*2)
+                                                | nombreA amenaza == "Princesa" = Ciudad nom (calculoEvac amenaza canthabit (*1))
+                                                | otherwise = Ciudad nom (calculoEvac amenaza canthabit (*1))
 -- ====================================================================== --
 --                 Todos - DarlePlay
 -- ====================================================================== --
