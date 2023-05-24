@@ -176,6 +176,7 @@ chequeoElem :: [String] -> [String] -> [Bool]
 chequeoElem [] _ = []
 chequeoElem _ [] = []
 chequeoElem (x:xs) (y:ys) = elem x (y:ys) : chequeoElem xs (y:ys)
+
 amenazaInvulnerable :: ChicaSuperPoderosa -> Amenaza -> Bool
 amenazaInvulnerable chicasuperpoderosa amenaza = not.or $ chequeoElem (habilidades chicasuperpoderosa) (debilidades amenaza)
 
@@ -200,6 +201,9 @@ que pueden vencer la amenaza.-}
 -- ====================================================================== --
 {-En base a una lista de chicas, saber cuáles tienen nombre que empieza 
 con B y más de una habilidad.-}
+
+listaChicasNombreEmpizaConBYMasDeUnaHabilidad:: [ChicaSuperPoderosa]->[ChicaSuperPoderosa]
+listaChicasNombreEmpizaConBYMasDeUnaHabilidad = filter (\x-> (head . nombre) x == 'B' && (length . habilidades) x >1 )
 
 -- ====================================================================== --
 --                 Integrante 1- Yendo al nutricionista
