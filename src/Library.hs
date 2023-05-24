@@ -26,6 +26,14 @@ data Ciudad = Ciudad {
     cantidadDeHabitantes :: Number
 } deriving (Show)
 
+data Capitulo = Capitulo {
+    ciudad :: Ciudad,
+    villano :: Amenaza,
+    chicasuperpoderosa :: ChicaSuperPoderosa,
+    alimentos :: [Persona -> Persona]
+} deriving (Show)
+type Temporada = [Capitulo]
+-- Seria mas apropiado hacer una lista de chicasuper -> chicasuper pero primero habria que hacer el resto de funciones de comer antes de ver 
 -- ====================================================================== --
 --                 Chicas Super Poderosas
 -- ====================================================================== --
@@ -96,7 +104,10 @@ saltadilla = Ciudad {
     nombreCiudad = "Saltadilla",
     cantidadDeHabitantes = 21
 }
-
+springfield = Ciudad {
+    nombreCiudad = "Springfield",
+    cantidadDeHabitantes = 50
+}
 -- ====================================================================== --
 --                 Integrante 1
 -- ====================================================================== --
@@ -198,7 +209,8 @@ con B y más de una habilidad.-}
     para esta bebida se conoce las personas con las que se está tomando, y 
     las que no sean amigas, se agregan como tales.-}
 
-consumirSustX chicasuperpoderosa = chicasuperpoderosa { nivelResistencia = 0 } 
+consumirSustX :: ChicaSuperPoderosa -> ChicaSuperPoderosa
+consumirSustX chicasuperpoderosa = chicasuperpoderosa { nivelResistencia = 0 }
 generarLista [] = []
 generarLista (y:ys) = map nombre (y:ys)
 sinRepetir [] = []
@@ -209,7 +221,7 @@ nuevosAmigos [] (x:xs) = generarLista (x:xs)
 nuevosAmigos [] [] = []
 nuevosAmigos (x:xs) (y:ys) = sinRepetir (x:xs) ++ generarLista (y:ys)
 
-tomarCerveza :: Persona -> [Persona] -> Persona 
+tomarCerveza :: Persona -> [Persona] -> Persona
 tomarCerveza (Persona nom resis hab amigos) [] = Persona nom resis hab amigos
 tomarCerveza (Persona nom resis hab amigos) (x:xs)  = Persona nom resis hab (nuevosAmigos amigos (x:xs))
 -- ====================================================================== --
@@ -259,7 +271,7 @@ que depende del villano. Antes no lo sabíamos, pero los villanos pueden tener d
 En ninguno de los casos la población puede quedar negativa, a lo sumo la ciudad quedará desierta (con población de 0).
 -}
 calculoEvac :: Amenaza -> Number -> (Number -> Number) -> Number
-calculoEvac amenaza x f 
+calculoEvac amenaza x f
     | x - calc >= 0 = x - calc
     | otherwise = 0
     where calc = f (div (danioPotencialAmenaza amenaza) 10)
@@ -272,7 +284,7 @@ efectoSecundario ::  Amenaza  -> Ciudad -> Ciudad
 efectoSecundario amenaza (Ciudad nom canthabit) | nombreA amenaza == "Mojo Jojo" = city nom 2 1
                                                 | nombreA amenaza == "Banda Gangrena" = city "Gangrena City" 1 2
                                                 | nombreA amenaza == "Princesa" = city nom 1 1
-                                                | otherwise = city nom 1 1                                              
+                                                | otherwise = city nom 1 1
                                                 where city nombre numA numB = Ciudad nombre (calculoEvac amenaza canthabit (*numA)*numB)
 -- ====================================================================== --
 --                 Todos - DarlePlay
@@ -284,10 +296,25 @@ Un capítulo incluye a un villano, el nombre de una ciudad que pretende atacar, 
 Queremos poder darlePlay a un capítulo para saber cómo afecta a una ciudad dada, que puede o no coincidir 
 con la mencionada en el capítulo. Un villano intentará atacar a la ciudad (si es la mencionada en el capítulo) 
 siempre que la Chica Superpoderosa, habiendo consumido sus alimentos, no pueda vencerlo. Como resultado
- de darlePlay a un capítulo y ciudad, vamos a conocer cómo cambia la ciudad que indicamos.
+de darlePlay a un capítulo y ciudad, vamos a conocer cómo cambia la ciudad que indicamos.
 Aclaración: Un capítulo sólo puede afectar a la ciudad que nombra. Si es otra ciudad y no la que se nombra en el capítulo, entonces no le hace nada..
 
 A su vez, los capítulos están agrupados por temporada. Una temporada no es más que una serie ordenada de capítulos. Como somos grandes maratoneros de series copadas y nos gusta que todo tenga un hilo conductor, queremos saber cómo afecta una temporada a una ciudad. Para mantener el mencionado hilo conductor, la ciudad inicia con el estado en que quedó al finalizar el capítulo anterior.
 
 Se pide modelar el capítulo, la temporada y las funciones darlePlay/2 y maraton/2 que representan, respectivamente, el paso de un capítulo y de una temporada para una ciudad.
 -}
+consumirAlimentos :: ChicaSuperPoderosa -> [Persona -> Persona] -> ChicaSuperPoderosa
+consumirAlimentos chica [] = chica
+consumirAlimentos chica (x:xs) = foldr ($) chica (x:xs)
+chequeoCiudad :: Capitulo -> Ciudad -> Bool
+chequeoCiudad (Capitulo ciudad _ _ _) (Ciudad nombrecity _) = nombreCiudad ciudad /= nombrecity
+darlePlay :: Capitulo -> Ciudad -> Ciudad
+darlePlay capi ciudad | chequeoCiudad capi ciudad = ciudad
+                      | otherwise = reproducirCapitulo capi
+reproducirCapitulo :: Capitulo -> Ciudad
+reproducirCapitulo (Capitulo ciudad malo chica alimentos) | not(puedeVencerAmenaza (consumirAlimentos chica alimentos) malo) = rumorAtaque malo ciudad
+                                                          | otherwise = ciudad -- ¿calculoEvac? en teoria se debia haber corrido que iba a dar un ataque.
+maraton :: [Capitulo] -> Ciudad -> Ciudad
+maraton [] ciudad = ciudad
+maraton (x:xs) ciudad = foldr darlePlay ciudad (x:xs)
+-- Atencion: hace falta hacer un par de alimentos mas y ver si consumirAlimentos no da error, aparte de plantear un capitulo cada uno y armar la temporada. Por suerte el IDE no me llora nada asi que puede ser que asi como esta anda
