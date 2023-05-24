@@ -234,6 +234,9 @@ toma saborizador de Fresa, su resistencia se reduciría en 5 unidades.
 + El querido ferne’, donde al consumirlo obtiene automáticamente la habilidad 
 de “Chef de Asados”. Si ya la tiene, no se agrega.-}
 
+tomarSaborizadorDe :: String -> Persona -> Persona
+tomarSaborizadorDe sabor persona = persona {nivelResistencia= nivelResistencia persona - length sabor}
+
 tomarFerne :: Persona -> Persona
 tomarFerne persona
     |elem "Chef de Asados"  $ habilidades persona = persona
