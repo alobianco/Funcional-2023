@@ -24,7 +24,7 @@ data Amenaza = Amenaza{
 data Ciudad = Ciudad {
     nombreCiudad :: String,
     cantidadDeHabitantes :: Number
-} deriving (Show)
+} deriving (Show,Eq)
 
 data Capitulo = Capitulo {
     ciudad :: Ciudad,
@@ -279,8 +279,8 @@ calculoEvac amenaza x f
     | otherwise = 0
     where calc = f (div (danioPotencialAmenaza amenaza) 10)
 
-rumorAtaque :: Amenaza -> Ciudad -> Ciudad
-rumorAtaque amenaza ciudad  | amenazaPuedeAtacarCiudad ciudad amenaza = efectoSecundario amenaza ciudad
+amenazaAtacaCiudad :: Amenaza -> Ciudad -> Ciudad
+amenazaAtacaCiudad amenaza ciudad  | amenazaPuedeAtacarCiudad ciudad amenaza = efectoSecundario amenaza ciudad
                             | otherwise = ciudad {cantidadDeHabitantes= calculoEvac amenaza (cantidadDeHabitantes ciudad) (*1)}
 
 efectoSecundario ::  Amenaza  -> Ciudad -> Ciudad
@@ -315,7 +315,7 @@ darlePlay :: Capitulo -> Ciudad -> Ciudad
 darlePlay capi ciudad | chequeoCiudad capi ciudad = ciudad
                       | otherwise = reproducirCapitulo capi
 reproducirCapitulo :: Capitulo -> Ciudad
-reproducirCapitulo (Capitulo ciudad malo chica alimentos) | not(puedeVencerAmenaza (consumirAlimentos chica alimentos) malo) = rumorAtaque malo ciudad
+reproducirCapitulo (Capitulo ciudad malo chica alimentos) | not(puedeVencerAmenaza (consumirAlimentos chica alimentos) malo) = amenazaAtacaCiudad malo ciudad
                                                           | otherwise = ciudad -- ¿calculoEvac? en teoria se debia haber corrido que iba a dar un ataque.
 maraton :: [Capitulo] -> Ciudad -> Ciudad
 maraton [] ciudad = ciudad

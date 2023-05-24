@@ -7,37 +7,37 @@ correrTests :: IO ()
 correrTests = hspec $ do
   describe "Tests de la primera entrega" $ do
     context "Integrante 1: danioPotencialAmenaza/1" $ do
-      it "El danio potencial de mojojojo da 64" $ do
+      it "El danio potencial de Mojo Jojo da 64" $ do
         danioPotencialAmenaza mojojojo `shouldBe` 64   
-      it "El danio potencial de princesa da 89" $ do
+      it "El danio potencial de Princesa da 89" $ do
         danioPotencialAmenaza princesa `shouldBe` 89 
-      it "El danio potencial de bandaGangrena da 40" $ do
+      it "El danio potencial de Banda Gangrena da 40" $ do
         danioPotencialAmenaza bandaGangrena `shouldBe` 40   
     context "Integrante 2: amenazaPuedeAtacarCiudad/2" $ do
-      it "bandaGangrena no puede atacar saltadilla" $ do
+      it "Banda Gangrena no puede atacar Saltadilla" $ do
         bandaGangrena `shouldNotSatisfy` amenazaPuedeAtacarCiudad saltadilla
-      it "mojojojo puede atacar saltadilla" $ do
+      it "Mojo Jojo puede atacar Saltadilla" $ do
         mojojojo `shouldSatisfy` amenazaPuedeAtacarCiudad saltadilla
-      it "princesa puede atacar saltadilla" $ do   
+      it "Princesa puede atacar Saltadilla" $ do   
         princesa `shouldSatisfy` amenazaPuedeAtacarCiudad saltadilla
     context "Integrante 3: propositoEsPar/1 y puedeVencerAmenaza/2" $ do
-      it "El proposito de princesa es par" $ do
+      it "El proposito de Princesa es par" $ do
         princesa `shouldSatisfy` propositoEsPar
-      it "Burbuja no puede vencer a princesa" $ do  
+      it "Burbuja no puede vencer a Princesa" $ do  
         princesa `shouldNotSatisfy` puedeVencerAmenaza burbuja
-      it "El proposito de mojojojo es par" $ do  
+      it "El proposito de Mojo Jojo es par" $ do  
         mojojojo `shouldSatisfy` propositoEsPar
-      it "bombon puede vencer a mojojojo" $ do  
+      it "Bombon puede vencer a Mojo Jojo" $ do  
         mojojojo `shouldSatisfy` puedeVencerAmenaza bombon
     context "Integrante 4: amenazaDeNivelAlto/1" $ do
-      it "El nivel de amenaza de princesa es alto" $ do
+      it "El nivel de amenaza de Princesa es alto" $ do
         princesa `shouldSatisfy` amenazaDeNivelAlto 
-      it "El nivel de amenaza de bandaGangrena no es alto" $ do  
+      it "El nivel de amenaza de Banda Gangrena no es alto" $ do  
         bandaGangrena `shouldNotSatisfy` amenazaDeNivelAlto
-       
---Traten de cambiar la estructura en la que plantean los tests, que no sea un simple "it" que diga "Punto de Integrante 2 funciona correctamente", 
---sino que por cada it se haga un testeo y que la descripción diga lo que realmente esta haciendo
-
+ -- ======================================================================  
+ --                         Segunda Parte
+ -- ======================================================================
+  
 {-
  Yendo al Nutricionista casos de prueba: 
 - Cualquier chica debe quedarse sin resistencia luego de consumir la sustancia X.
@@ -60,6 +60,16 @@ Mi villano Favorito casos de prueba
 -Banda Gangrena ataca Saltadilla. Su daño potencial es de 40, por lo que reduce la población en 4. No puede atacar a la ciudad con su población inicial, por lo que no se aplica su efecto secundario. La población final de Saltadilla es 17.
 -Banda Gangrena ataca Saltadilla dos veces consecutivas. El primer ataque no puede realizarse (caso anterior), pero en el segundo intento, que inicia con la población en 17 por la fuga del primero, sí puede atacar. Su segundo ataque deja a la población en 13 por la fuga, y luego (ahora sí) aplica su efecto secundario y duplica su población, quedando la misma en 26.
 -}
+  describe "Tests de la segunda entrega" $ do
+     context "Mi villano favorito: amenazaAtacaCiudad/2" $ do
+        it "El ataque de Mojo Jojo a Saltadilla la deja con 9 habitantes restantes" $ do 
+          amenazaAtacaCiudad mojojojo saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 9}
+        it "El ataque de Princesa a Saltadilla la deja con 13 habitantes restantes" $ do
+          amenazaAtacaCiudad princesa saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 13}
+        it "El ataque de Banda Gangrena a Saltadilla la deja con 17 habitantes restantes" $ do
+          amenazaAtacaCiudad bandaGangrena saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 17}
+        it "La Banda Gangrena ataca dos veces consecutivas a Saltadilla. La deja con 26 habitantes y su nombre cambia a Gangrena City" $ do
+          amenazaAtacaCiudad bandaGangrena (amenazaAtacaCiudad bandaGangrena saltadilla) `shouldBe` Ciudad {nombreCiudad = "Gangrena City", cantidadDeHabitantes = 26}
 
 {-
 darlePlay casos de prueba
