@@ -52,17 +52,27 @@ correrTests = hspec $ do
 - 4)Señor Cerdo le entra a la cocucha y queda igual.
 - 4)Burbuja se toma una cocucha y ya no tiene velocidad.
 -}
-
-  describe "Tests Yendo al Nutricionista" $ do
-      context "Integrante 4" $ do
+  describe "Tests de la segunda entrega" $ do
+    describe "Yendo al Nutricionista" $ do
+      context "Integrante 1: consumeSustX/1 y consumeCerveza/2" $ do
+        it "Cualquier chica debe quedarse sin resistencia luego de consumir la sustancia X." $ do
+          map (nivelResistencia.consumeSustX) [burbuja,bombon,bellota,senioritaBelo,seniorCerdo,silico] `shouldSatisfy` all (==0)
+        it "Burbuja toma una cerveza con el señor Silico y queda con 2 amigos, ya que no era amiga del mismo." $ do
+          (length.amigos.consumeCerveza [silico] $ burbuja) `shouldBe` 2
+        it "Burbuja toma una cerveza con la señorita Belo y queda con un amigo, pues ya era amiga de ella." $ do
+          (length.amigos.consumeCerveza [senioritaBelo] $ burbuja) `shouldBe` 1
+      context "Integrante 2: consumeFerne/1" $ do
+        it "Bellota se toma un ferne' y tiene su nueva habilidad de 'Chef de Asados'." $ do
+          (head.habilidades) (consumeFerne bellota) `shouldBe` "Chef de Asados" 
+      context "Integrante 4: consumeCarameloLiquido/1 y consumeCocucha/1" $ do
         it "Burbuja debe tener 20 de resistencia luego de consumir el caramelo líquido. " $ do
           nivelResistencia (consumeCarameloLiquido burbuja) `shouldBe` 20   
         it "La señorita Belo debe tener 0 de resistencia luego de consumir caramelo líquido. " $ do
-          nivelResistencia (consumeCarameloLiquido senioritaBelo) `shouldBe` 0   
-        it "Señor Cerdo le entra a la cocucha y queda igual. " $ do
+           nivelResistencia (consumeCarameloLiquido senioritaBelo) `shouldBe` 0   
+        it "Señor Cerdo le entra a la cocucha y queda igual." $ do
           consumeCocucha seniorCerdo `shouldBe` seniorCerdo   
         it "Burbuja se toma una cocucha y ya no tiene velocidad. " $ do
-            (head . habilidades) (consumeCocucha burbuja) `shouldNotBe` "Velocidad"
+          (head.habilidades) (consumeCocucha burbuja) `shouldNotBe` "Velocidad"
 {-
 Mi villano Favorito casos de prueba
 -Mojo Jojo ataca Saltadilla. Su daño potencial es de 64, por lo que con la fuga se reduce la población en 6, y como efectivamente puede atacar, luego realiza un rumor de un segundo ataque, el cual reduce en otros 6. La población final de Saltadilla es 9.
@@ -70,16 +80,16 @@ Mi villano Favorito casos de prueba
 -Banda Gangrena ataca Saltadilla. Su daño potencial es de 40, por lo que reduce la población en 4. No puede atacar a la ciudad con su población inicial, por lo que no se aplica su efecto secundario. La población final de Saltadilla es 17.
 -Banda Gangrena ataca Saltadilla dos veces consecutivas. El primer ataque no puede realizarse (caso anterior), pero en el segundo intento, que inicia con la población en 17 por la fuga del primero, sí puede atacar. Su segundo ataque deja a la población en 13 por la fuga, y luego (ahora sí) aplica su efecto secundario y duplica su población, quedando la misma en 26.
 -}
-  describe "Tests de la segunda entrega" $ do
-     context "Mi villano favorito: amenazaAtacaCiudad/2" $ do
-        it "El ataque de Mojo Jojo a Saltadilla la deja con 9 habitantes restantes" $ do 
-          amenazaAtacaCiudad mojojojo saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 9}
-        it "El ataque de Princesa a Saltadilla la deja con 13 habitantes restantes" $ do
-          amenazaAtacaCiudad princesa saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 13}
-        it "El ataque de Banda Gangrena a Saltadilla la deja con 17 habitantes restantes" $ do
-          amenazaAtacaCiudad bandaGangrena saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 17}
-        it "La Banda Gangrena ataca dos veces consecutivas a Saltadilla. La deja con 26 habitantes y su nombre cambia a Gangrena City" $ do
-          amenazaAtacaCiudad bandaGangrena (amenazaAtacaCiudad bandaGangrena saltadilla) `shouldBe` Ciudad {nombreCiudad = "Gangrena City", cantidadDeHabitantes = 26}
+  
+    context "Mi villano favorito: amenazaAtacaCiudad/2" $ do
+      it "El ataque de Mojo Jojo a Saltadilla la deja con 9 habitantes restantes." $ do 
+        amenazaAtacaCiudad mojojojo saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 9}
+      it "El ataque de Princesa a Saltadilla la deja con 13 habitantes restantes." $ do
+        amenazaAtacaCiudad princesa saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 13}
+      it "El ataque de Banda Gangrena a Saltadilla la deja con 17 habitantes restantes." $ do
+        amenazaAtacaCiudad bandaGangrena saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 17}
+      it "La Banda Gangrena ataca dos veces consecutivas a Saltadilla. La deja con 26 habitantes y su nombre cambia a Gangrena City." $ do
+        amenazaAtacaCiudad bandaGangrena (amenazaAtacaCiudad bandaGangrena saltadilla) `shouldBe` Ciudad {nombreCiudad = "Gangrena City", cantidadDeHabitantes = 26}
 
 {-
 darlePlay casos de prueba
