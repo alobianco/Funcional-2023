@@ -41,18 +41,28 @@ correrTests = hspec $ do
 {-
  Yendo al Nutricionista casos de prueba: 
 - Cualquier chica debe quedarse sin resistencia luego de consumir la sustancia X.
-- Burbuja debe tener 20 de resistencia luego de consumir el caramelo líquido. 
-- La señorita Belo debe tener 0 de resistencia luego de consumir caramelo líquido.
+- 4) Burbuja debe tener 20 de resistencia luego de consumir el caramelo líquido. 
+- 4)La señorita Belo debe tener 0 de resistencia luego de consumir caramelo líquido.
 - Bellota luego de tomar Gatorei queda igual.
 - Bombón luego de tomar Gatorei queda con 65 puntos de resistencia.
 - Burbuja toma una cerveza con el señor Silico y queda con 2 amigos, ya que no era amiga del mismo.
 - Bellota se toma un ferne’ y tiene su nueva habilidad de “Chef de Asados”.
 - Burbuja toma una cerveza con la señorita Belo y queda con un amigo, pues ya era amiga de ella.
 - Bombón toma 3 shots de vodka y pasa a llamarse “Bom”... por suerte, los otros efectos no los necesitamos  modelar.
-- Señor Cerdo le entra a la cocucha y queda igual.
-- Burbuja se toma una cocucha y ya no tiene velocidad.
+- 4)Señor Cerdo le entra a la cocucha y queda igual.
+- 4)Burbuja se toma una cocucha y ya no tiene velocidad.
 -}
 
+  describe "Tests Yendo al Nutricionista" $ do
+      context "Integrante 4" $ do
+        it "Burbuja debe tener 20 de resistencia luego de consumir el caramelo líquido. " $ do
+          nivelResistencia (consumeCarameloLiquido burbuja) `shouldBe` 20   
+        it "La señorita Belo debe tener 0 de resistencia luego de consumir caramelo líquido. " $ do
+          nivelResistencia (consumeCarameloLiquido senioritaBelo) `shouldBe` 0   
+        it "Señor Cerdo le entra a la cocucha y queda igual. " $ do
+          consumeCocucha seniorCerdo `shouldBe` seniorCerdo   
+        it "Burbuja se toma una cocucha y ya no tiene velocidad. " $ do
+            (head . habilidades) (consumeCocucha burbuja) `shouldNotBe` "Velocidad"
 {-
 Mi villano Favorito casos de prueba
 -Mojo Jojo ataca Saltadilla. Su daño potencial es de 64, por lo que con la fuga se reduce la población en 6, y como efectivamente puede atacar, luego realiza un rumor de un segundo ataque, el cual reduce en otros 6. La población final de Saltadilla es 9.

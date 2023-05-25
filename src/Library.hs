@@ -10,7 +10,7 @@ data Persona = Persona {
     nivelResistencia :: Number,
     habilidades :: [String],
     amigos :: [String]
-} deriving (Show)
+} deriving (Show,Eq)
 
 type ChicaSuperPoderosa = Persona
 
