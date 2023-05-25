@@ -109,6 +109,17 @@ springfield = Ciudad {
     nombreCiudad = "Springfield",
     cantidadDeHabitantes = 50
 }
+
+-- ====================================================================== --
+--                Capítulos
+-- ====================================================================== --
+capitulo2 = Capitulo {
+    ciudad = saltadilla,
+    villano = mojojojo,
+    chicasuperpoderosa = bellota,
+    alimentos = [consumeFerne,consumeSustX]
+}
+
 -- ====================================================================== --
 --                 Integrante 1
 -- ====================================================================== --
@@ -307,16 +318,18 @@ calculoEvac amenaza x f
     | otherwise = 0
     where calc = f (div (danioPotencialAmenaza amenaza) 10)
 
-amenazaAtacaCiudad :: Amenaza -> Ciudad -> Ciudad
-amenazaAtacaCiudad amenaza ciudad  | amenazaPuedeAtacarCiudad ciudad amenaza = efectoSecundario amenaza ciudad
-                            | otherwise = ciudad {cantidadDeHabitantes= calculoEvac amenaza (cantidadDeHabitantes ciudad) (*1)}
+intentaAtacarCiudad :: Amenaza -> Ciudad -> Ciudad
+intentaAtacarCiudad amenaza ciudad  
+        | amenazaPuedeAtacarCiudad ciudad amenaza = efectoSecundario amenaza ciudad
+        | otherwise = ciudad {cantidadDeHabitantes= calculoEvac amenaza (cantidadDeHabitantes ciudad) (*1)}
 
 efectoSecundario ::  Amenaza  -> Ciudad -> Ciudad
-efectoSecundario amenaza (Ciudad nom canthabit) | nombreA amenaza == "Mojo Jojo" = city nom 2 1
-                                                | nombreA amenaza == "Banda Gangrena" = city "Gangrena City" 1 2
-                                                | nombreA amenaza == "Princesa" = city nom 1 1
-                                                | otherwise = city nom 1 1
-                                                where city nombre numA numB = Ciudad nombre (calculoEvac amenaza canthabit (*numA)*numB)
+efectoSecundario amenaza (Ciudad nom canthabit) 
+        | nombreA amenaza == "Mojo Jojo" = city nom 2 1
+        | nombreA amenaza == "Banda Gangrena" = city "Gangrena City" 1 2
+        | nombreA amenaza == "Princesa" = city nom 1 1
+        | otherwise = city nom 1 1
+        where city nombre numA numB = Ciudad nombre (calculoEvac amenaza canthabit (*numA)*numB)
 -- ====================================================================== --
 --                 Todos - DarlePlay
 -- ====================================================================== --
@@ -337,15 +350,19 @@ Se pide modelar el capítulo, la temporada y las funciones darlePlay/2 y maraton
 consumirAlimentos :: ChicaSuperPoderosa -> [ConsumeAlimento] -> ChicaSuperPoderosa
 consumirAlimentos chica [] = chica
 consumirAlimentos chica (x:xs) = foldr ($) chica (x:xs)
+
 chequeoCiudad :: Capitulo -> Ciudad -> Bool
 chequeoCiudad (Capitulo ciudad _ _ _) (Ciudad nombrecity _) = nombreCiudad ciudad /= nombrecity
+
 darlePlay :: Capitulo -> Ciudad -> Ciudad
 darlePlay capi ciudad | chequeoCiudad capi ciudad = ciudad
                       | otherwise = reproducirCapitulo capi
+
 reproducirCapitulo :: Capitulo -> Ciudad
-reproducirCapitulo (Capitulo ciudad malo chica alimentos) | not(puedeVencerAmenaza (consumirAlimentos chica alimentos) malo) = amenazaAtacaCiudad malo ciudad
+reproducirCapitulo (Capitulo ciudad malo chica alimentos) | not(puedeVencerAmenaza (consumirAlimentos chica alimentos) malo) = intentaAtacarCiudad malo ciudad
                                                           | otherwise = ciudad -- ¿calculoEvac? en teoria se debia haber corrido que iba a dar un ataque.
-maraton :: [Capitulo] -> Ciudad -> Ciudad
+
+maraton :: Temporada -> Ciudad -> Ciudad
 maraton [] ciudad = ciudad
 maraton (x:xs) ciudad = foldr darlePlay ciudad (x:xs)
 -- Atencion: hace falta hacer un par de alimentos mas y ver si consumirAlimentos no da error, aparte de plantear un capitulo cada uno y armar la temporada. Por suerte el IDE no me llora nada asi que puede ser que asi como esta anda

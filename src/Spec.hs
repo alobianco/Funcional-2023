@@ -83,13 +83,13 @@ Mi villano Favorito casos de prueba
   
     context "Mi villano favorito: amenazaAtacaCiudad/2" $ do
       it "El ataque de Mojo Jojo a Saltadilla la deja con 9 habitantes restantes." $ do 
-        amenazaAtacaCiudad mojojojo saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 9}
+        intentaAtacarCiudad mojojojo saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 9}
       it "El ataque de Princesa a Saltadilla la deja con 13 habitantes restantes." $ do
-        amenazaAtacaCiudad princesa saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 13}
+        intentaAtacarCiudad princesa saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 13}
       it "El ataque de Banda Gangrena a Saltadilla la deja con 17 habitantes restantes." $ do
-        amenazaAtacaCiudad bandaGangrena saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 17}
+        intentaAtacarCiudad bandaGangrena saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 17}
       it "La Banda Gangrena ataca dos veces consecutivas a Saltadilla. La deja con 26 habitantes y su nombre cambia a Gangrena City." $ do
-        amenazaAtacaCiudad bandaGangrena (amenazaAtacaCiudad bandaGangrena saltadilla) `shouldBe` Ciudad {nombreCiudad = "Gangrena City", cantidadDeHabitantes = 26}
+        intentaAtacarCiudad bandaGangrena (intentaAtacarCiudad bandaGangrena saltadilla) `shouldBe` Ciudad {nombreCiudad = "Gangrena City", cantidadDeHabitantes = 26}
 
 {-
 darlePlay casos de prueba
@@ -97,3 +97,8 @@ darlePlay casos de prueba
 -El grupo debe plantear una temporada y armar dos casos de prueba para una maratón de la misma, con las 2 ciudades.
 -Para armar los distintos casos, se pueden usar valores de los puntos anteriores.
 -}
+    describe "¿Vemos uno mas?: darlePlay/2 y maraton/2" $do
+      context "Capitulo 2: Mojo Jojo intenta atacar saltadilla. Bellota no puede defenderla por haber consumido ferne' y la sustancia X." $ do
+        context "Mojo Jojo hace correr el rumor de un segundo ataque, ya que asume que las Chicas Superpoderosas van a acudir más rápidamente y su objetivo es destruirlas." $ do
+          it "Como resultado de esto se fuga el doble de población, quedando así 9 habitantes en Saltadilla." $ do 
+            darlePlay capitulo2 saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 9}
