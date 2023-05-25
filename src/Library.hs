@@ -205,6 +205,15 @@ con B y más de una habilidad.-}
 listaChicasNombreEmpizaConBYMasDeUnaHabilidad:: [ChicaSuperPoderosa]->[ChicaSuperPoderosa]
 listaChicasNombreEmpizaConBYMasDeUnaHabilidad = filter (\x-> (head . nombre) x == 'B' && (length . habilidades) x >1 )
 
+
+-- ====================================================================== --
+
+--Yendo al nutricionista
+--Cuando una Chica Superpoderosa consume ciertos alimentos o bebidas 
+--(los vamos a llamar alimentos en general), suele verse afectada de diferentes formas:
+
+-- ====================================================================== --
+
 -- ====================================================================== --
 --                 Integrante 1- Yendo al nutricionista
 -- ====================================================================== --
@@ -214,11 +223,15 @@ listaChicasNombreEmpizaConBYMasDeUnaHabilidad = filter (\x-> (head . nombre) x =
     las que no sean amigas, se agregan como tales.-}
 
 consumirSustX :: ChicaSuperPoderosa -> ChicaSuperPoderosa
-consumirSustX chicasuperpoderosa = chicasuperpoderosa { nivelResistencia = 0 }
+--consumirSustX chicasuperpoderosa = chicasuperpoderosa { nivelResistencia = 0 }
+consumirSustX chicasuperpoderosa = modificaResistencia chicasuperpoderosa (nivelResistencia chicasuperpoderosa * (-1) )
+
 generarLista [] = []
 generarLista (y:ys) = map nombre (y:ys)
+
 sinRepetir [] = []
 sinRepetir (x:xs) = x : sinRepetir (filter (/=x) xs)
+
 nuevosAmigos :: [String] -> [Persona] -> [String]
 nuevosAmigos (x:xs) [] = x:xs
 nuevosAmigos [] (x:xs) = generarLista (x:xs)
@@ -262,10 +275,20 @@ que su nombre acepta según su longitud, simplemente queda con nombre vacío, no
 + La cocucha (que sabemos que saca hasta el óxido), le elimina la primera habilidad 
 a quien la ingiera. Si no tiene habilidades, no causa ningún efecto.-}
 
+modificaResistencia:: ChicaSuperPoderosa->Number->ChicaSuperPoderosa
+modificaResistencia chica resistencia = chica { nivelResistencia = nivelResistencia chica + resistencia }
+
+consumeCarameloLiquido:: ChicaSuperPoderosa -> ChicaSuperPoderosa
+consumeCarameloLiquido chica = modificaResistencia chica (-10)
+
+consumeCocucha:: ChicaSuperPoderosa->ChicaSuperPoderosa
+consumeCocucha chica
+            | (not . null . habilidades) chica = chica { habilidades = (tail . habilidades) chica }
+            | otherwise = chica
 -- ====================================================================== --
 --                 Todos - Mi villano favorito
 -- ====================================================================== --
-{-
+{-)
 Queremos representar el efecto que tiene un villano al atacar una ciudad. Cuando un villano intenta atacar una ciudad, 
 pueda o no y sólo por motivos del rumor, su población escapa según una cantidad igual a la décima parte de su daño potencial (división entera). 
 Además, si el villano efectivamente puede atacar la misma antes de esta fuga, luego de la misma se aplica un efecto adicional 
