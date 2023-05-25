@@ -26,11 +26,12 @@ data Ciudad = Ciudad {
     cantidadDeHabitantes :: Number
 } deriving (Show,Eq)
 
+type ConsumeAlimento = ChicaSuperPoderosa -> ChicaSuperPoderosa
 data Capitulo = Capitulo {
     ciudad :: Ciudad,
     villano :: Amenaza,
     chicasuperpoderosa :: ChicaSuperPoderosa,
-    alimentos :: [Persona -> Persona]
+    alimentos :: [ConsumeAlimento]
 } deriving (Show)
 type Temporada = [Capitulo]
 -- Seria mas apropiado hacer una lista de chicasuper -> chicasuper pero primero habria que hacer el resto de funciones de comer antes de ver 
@@ -222,9 +223,9 @@ listaChicasNombreEmpizaConBYMasDeUnaHabilidad = filter (\x-> (head . nombre) x =
     para esta bebida se conoce las personas con las que se está tomando, y 
     las que no sean amigas, se agregan como tales.-}
 
-consumirSustX :: ChicaSuperPoderosa -> ChicaSuperPoderosa
+consumeSustX :: ConsumeAlimento
 --consumirSustX chicasuperpoderosa = chicasuperpoderosa { nivelResistencia = 0 }
-consumirSustX chicasuperpoderosa = modificaResistencia chicasuperpoderosa (nivelResistencia chicasuperpoderosa * (-1) )
+consumeSustX chicasuperpoderosa = modificaResistencia chicasuperpoderosa (nivelResistencia chicasuperpoderosa * (-1) )
 
 generarLista [] = []
 generarLista (y:ys) = map nombre (y:ys)
@@ -232,15 +233,15 @@ generarLista (y:ys) = map nombre (y:ys)
 sinRepetir [] = []
 sinRepetir (x:xs) = x : sinRepetir (filter (/=x) xs)
 
-nuevosAmigos :: [String] -> [Persona] -> [String]
+nuevosAmigos :: [String] -> [ChicaSuperPoderosa] -> [String]
 nuevosAmigos (x:xs) [] = x:xs
 nuevosAmigos [] (x:xs) = generarLista (x:xs)
 nuevosAmigos [] [] = []
-nuevosAmigos (x:xs) (y:ys) = sinRepetir (x:xs) ++ generarLista (y:ys)
+nuevosAmigos (x:xs) (y:ys) = sinRepetir ((x:xs) ++ generarLista (y:ys))
 
-tomarCerveza :: Persona -> [Persona] -> Persona
-tomarCerveza (Persona nom resis hab amigos) [] = Persona nom resis hab amigos
-tomarCerveza (Persona nom resis hab amigos) (x:xs)  = Persona nom resis hab (nuevosAmigos amigos (x:xs))
+consumeCerveza :: [ChicaSuperPoderosa] -> ConsumeAlimento
+consumeCerveza [] (Persona nom resis hab amigos) = Persona nom resis hab amigos
+consumeCerveza (x:xs) (Persona nom resis hab amigos) = Persona nom resis hab (nuevosAmigos amigos (x:xs))
 -- ====================================================================== --
 --                 Integrante 2 - Yendo al nutricionista
 -- ====================================================================== --
@@ -251,11 +252,11 @@ toma saborizador de Fresa, su resistencia se reduciría en 5 unidades.
 + El querido ferne’, donde al consumirlo obtiene automáticamente la habilidad 
 de “Chef de Asados”. Si ya la tiene, no se agrega.-}
 
-tomarSaborizadorDe :: String -> Persona -> Persona
-tomarSaborizadorDe sabor persona = persona {nivelResistencia= nivelResistencia persona - length sabor}
+consumeSaborizadorDe :: String -> ConsumeAlimento
+consumeSaborizadorDe sabor persona = persona {nivelResistencia= nivelResistencia persona - length sabor}
 
-tomarFerne :: Persona -> Persona
-tomarFerne persona
+consumeFerne :: ConsumeAlimento
+consumeFerne persona
     |elem "Chef de Asados"  $ habilidades persona = persona
     |otherwise = persona {habilidades =  "Chef de Asados" : habilidades persona }
 
@@ -278,10 +279,10 @@ a quien la ingiera. Si no tiene habilidades, no causa ningún efecto.-}
 modificaResistencia:: ChicaSuperPoderosa->Number->ChicaSuperPoderosa
 modificaResistencia chica resistencia = chica { nivelResistencia = nivelResistencia chica + resistencia }
 
-consumeCarameloLiquido:: ChicaSuperPoderosa -> ChicaSuperPoderosa
+consumeCarameloLiquido:: ConsumeAlimento
 consumeCarameloLiquido chica = modificaResistencia chica (-10)
 
-consumeCocucha:: ChicaSuperPoderosa->ChicaSuperPoderosa
+consumeCocucha:: ConsumeAlimento
 consumeCocucha chica
             | (not . null . habilidades) chica = chica { habilidades = (tail . habilidades) chica }
             | otherwise = chica
@@ -333,7 +334,7 @@ A su vez, los capítulos están agrupados por temporada. Una temporada no es má
 
 Se pide modelar el capítulo, la temporada y las funciones darlePlay/2 y maraton/2 que representan, respectivamente, el paso de un capítulo y de una temporada para una ciudad.
 -}
-consumirAlimentos :: ChicaSuperPoderosa -> [Persona -> Persona] -> ChicaSuperPoderosa
+consumirAlimentos :: ChicaSuperPoderosa -> [ConsumeAlimento] -> ChicaSuperPoderosa
 consumirAlimentos chica [] = chica
 consumirAlimentos chica (x:xs) = foldr ($) chica (x:xs)
 chequeoCiudad :: Capitulo -> Ciudad -> Bool
