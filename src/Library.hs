@@ -286,6 +286,20 @@ recupera 5 puntos de resistencia a la Chica que lo consume por cada amiga que te
 perdiendo la última letra del mismo por cada shot que tome. Si toma más shots que los 
 que su nombre acepta según su longitud, simplemente queda con nombre vacío, no hace falta nada especial.-}
 
+cantAmigos :: ChicaSuperPoderosa -> Number
+cantAmigos = (length.amigos)
+
+recuperaResistencia:: ChicaSuperPoderosa->Number->ChicaSuperPoderosa
+recuperaResistencia persona resistencia = modificaResistencia persona (5*resistencia)
+
+consumeGatorei :: ConsumeAlimento
+consumeGatorei persona = recuperaResistencia persona $ cantAmigos persona
+
+consumeShotVodka :: ChicaSuperPoderosa -> Number -> ChicaSuperPoderosa
+consumeShotVodka chica cantidadShot = chica {nombre = nuevoNombre (nombre chica) cantidadShot}
+
+nuevoNombre :: String -> Number -> String
+nuevoNombre nombre cantidad = take (length nombre - cantidad) nombre
 -- ====================================================================== --
 --                 Integrante 4 - Yendo al nutricionista
 -- ====================================================================== --

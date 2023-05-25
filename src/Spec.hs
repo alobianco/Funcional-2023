@@ -63,7 +63,13 @@ correrTests = hspec $ do
           (length.amigos.consumeCerveza [senioritaBelo] $ burbuja) `shouldBe` 1
       context "Integrante 2: consumeFerne/1" $ do
         it "Bellota se toma un ferne' y tiene su nueva habilidad de 'Chef de Asados'." $ do
-          (head.habilidades) (consumeFerne bellota) `shouldBe` "Chef de Asados" 
+          (head.habilidades) (consumeFerne bellota) `shouldBe` "Chef de Asados"
+      context "Integrante 3: consumeGatorei/1" $ do
+        it "Bombón luego de tomar Gatorei queda con 65 puntos de resistencia." $ do
+          nivelResistencia (consumeGatorei bombon) `shouldBe` 65
+      context "Integrante 3: consumeShotVodka/2" $ do
+        it "Bombón toma 3 shots de vodka y pasa a llamarse 'Bom'." $ do
+          nombre (consumeShotVodka bombon 3) `shouldBe` "Bom"
       context "Integrante 4: consumeCarameloLiquido/1 y consumeCocucha/1" $ do
         it "Burbuja debe tener 20 de resistencia luego de consumir el caramelo líquido. " $ do
           nivelResistencia (consumeCarameloLiquido burbuja) `shouldBe` 20   
