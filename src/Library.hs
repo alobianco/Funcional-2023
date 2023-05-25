@@ -113,6 +113,12 @@ springfield = Ciudad {
 -- ====================================================================== --
 --                Capítulos
 -- ====================================================================== --
+capitulo1= Capitulo {
+    ciudad = springfield,
+    villano = princesa,
+    chicasuperpoderosa = bombon,
+    alimentos = [consumeCarameloLiquido,consumeCarameloLiquido]
+}
 capitulo2 = Capitulo {
     ciudad = saltadilla,
     villano = mojojojo,

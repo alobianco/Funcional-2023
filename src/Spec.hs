@@ -98,7 +98,11 @@ darlePlay casos de prueba
 -Para armar los distintos casos, se pueden usar valores de los puntos anteriores.
 -}
     describe "¿Vemos uno mas?: darlePlay/2 y maraton/2" $do
-      context "Capitulo 2: Mojo Jojo intenta atacar saltadilla. Bellota no puede defenderla por haber consumido ferne' y la sustancia X." $ do
+      context "Capitulo 1: Princesa intenta atacar Springfield. Bombon falla al detenerla por haber consumido dos caramelos liquidos" $ do
+        context "Sin embargo Princesa no es lo suficientemente fuerte para atacar una ciudad de otra animacion como Springfield" $ do
+          it "Como resultado la paz sigue en Springfield y nadie se entero de nada (salvo de una niña gritona disfrazada de abeja que tuvo que ser llevada a la carcel estatal por 8 policias o asi dicen los rumores)" $ do
+            darlePlay capitulo1 springfield `shouldBe` Ciudad { nombreCiudad = "Springfield" ,cantidadDeHabitantes = 42}
+      context "Capitulo 2: Mojo Jojo intenta atacar Saltadilla. Bellota no puede defenderla por haber consumido ferne' y la sustancia X." $ do
         context "Mojo Jojo hace correr el rumor de un segundo ataque, ya que asume que las Chicas Superpoderosas van a acudir más rápidamente y su objetivo es destruirlas." $ do
           it "Como resultado de esto se fuga el doble de población, quedando así 9 habitantes en Saltadilla." $ do 
             darlePlay capitulo2 saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 9}
