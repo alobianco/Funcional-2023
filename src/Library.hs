@@ -207,10 +207,10 @@ amenazaInvulnerable chicasuperpoderosa amenaza = not.or $ chequeoElem (habilidad
 {-Dada una lista de amenazas, determinar cuál es la amenaza preponderante, 
 que es aquella que tenga más nivel de poder.-}
 
+amenazaPreponderante :: [Amenaza] -> String
+amenazaPreponderante amenazas = unwords.map nombreA.filter ((==maximoPoder).nivelDePoder) $amenazas
+                                where maximoPoder = maximum.map nivelDePoder $ amenazas
 
---amenazaPreponderante lista = (maximum.map nivelDePoder) lista
-
-amenazaPreponderante amenazas = unwords.map nombreA.filter ((==(maximum.map nivelDePoder) amenazas).nivelDePoder) $amenazas
 -- ====================================================================== --
 --                 Integrante 3 - Entrada en calor
 -- ====================================================================== --
@@ -218,7 +218,7 @@ amenazaPreponderante amenazas = unwords.map nombreA.filter ((==(maximum.map nive
 que pueden vencer la amenaza.-}
 
 chicasPuedenVencerAmenaza :: [ChicaSuperPoderosa] -> Amenaza -> [String]
-chicasPuedenVencerAmenaza chicasuperpoderosas amenaza = map nombre $ filter (\chica -> puedeVencerAmenaza chica amenaza) chicasuperpoderosas
+chicasPuedenVencerAmenaza chicasuperpoderosas amenaza = map nombre $ filter (`puedeVencerAmenaza` amenaza) chicasuperpoderosas
 
 -- ====================================================================== --
 --                 Integrante 4 - Entrada en calor
@@ -301,8 +301,8 @@ recuperaResistencia persona resistencia = modificaResistencia persona (5*resiste
 consumeGatorei :: ConsumeAlimento
 consumeGatorei persona = recuperaResistencia persona $ cantAmigos persona
 
-consumeShotVodka :: ChicaSuperPoderosa -> Number -> ChicaSuperPoderosa
-consumeShotVodka chica cantidadShot = chica {nombre = nuevoNombre (nombre chica) cantidadShot}
+consumeShotVodka :: Number -> ConsumeAlimento
+consumeShotVodka cantidadShot chica = chica {nombre = nuevoNombre (nombre chica) cantidadShot}
 
 nuevoNombre :: String -> Number -> String
 nuevoNombre nombre cantidad = take (length nombre - cantidad) nombre
@@ -402,3 +402,4 @@ maraton :: Temporada -> Ciudad -> Ciudad
 maraton [] ciudad = ciudad
 maraton (x:xs) ciudad = foldr darlePlay ciudad (x:xs)
 -- Atencion: hace falta hacer un par de alimentos mas y ver si consumirAlimentos no da error, aparte de plantear un capitulo cada uno y armar la temporada. Por suerte el IDE no me llora nada asi que puede ser que asi como esta anda
+-- Rta: consumirAlimentos no da error
