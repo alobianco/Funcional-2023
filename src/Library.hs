@@ -348,24 +348,24 @@ a lo sumo la ciudad quedará desierta (con población de 0).
 -}
 
 villanoAtacaCiudad :: Amenaza -> Ciudad -> Ciudad
-villanoAtacaCiudad amenaza ciudad  
+villanoAtacaCiudad amenaza ciudad
     | amenazaPuedeAtacarCiudad ciudad amenaza = efectoAdicional amenaza ciudad
     | otherwise = ciudad {cantidadDeHabitantes= calculoEvacuacion amenaza (cantidadDeHabitantes ciudad) (*1)}
 
 efectoAdicional ::  Amenaza  -> Ciudad -> Ciudad
-efectoAdicional amenaza (Ciudad nombreCiudad cantidadDeHabitantes) 
+efectoAdicional amenaza (Ciudad nombreCiudad cantidadDeHabitantes)
     | nombreA amenaza == "Mojo Jojo" = city nombreCiudad 2 1
     | nombreA amenaza == "Banda Gangrena" = city "Gangrena City" 1 2
     | nombreA amenaza == "Princesa" = city nombreCiudad 1 1
     | otherwise = city nombreCiudad 1 1
-    where city nombre numA numB = Ciudad nombre (calculoEvacuacion amenaza cantidadDeHabitantes (*numA)*numB)
+    where city nombre numA numB = Ciudad nombre (calculoEvacuacion amenaza cantidadDeHabitantes (*numA) *numB)
 
 calculoEvacuacion :: Amenaza -> Number -> (Number -> Number) -> Number
 calculoEvacuacion amenaza cantidadDeHabitantes f
     | cantidadDeHabitantes - calc >= 0 = cantidadDeHabitantes - calc
     | otherwise = 0
     where calc = f (div (danioPotencialAmenaza amenaza) 10)
-    
+
 -- ====================================================================== --
 --                 Todos - DarlePlay
 -- ====================================================================== --
@@ -392,11 +392,12 @@ chequeoCiudad (Capitulo ciudad _ _ _) (Ciudad nombrecity _) = nombreCiudad ciuda
 
 darlePlay :: Capitulo -> Ciudad -> Ciudad
 darlePlay capi ciudad | chequeoCiudad capi ciudad = ciudad
-                      | otherwise = reproducirCapitulo capi
+                      | otherwise = reproducirCapitulo capi ciudad
 
-reproducirCapitulo :: Capitulo -> Ciudad
-reproducirCapitulo (Capitulo ciudad malo chica alimentos) | not(puedeVencerAmenaza (consumirAlimentos chica alimentos) malo) = villanoAtacaCiudad malo ciudad
-                                                          | otherwise = ciudad -- ¿calculoEvac? en teoria se debia haber corrido que iba a dar un ataque.
+reproducirCapitulo :: Capitulo -> Ciudad -> Ciudad
+reproducirCapitulo (Capitulo ciudad malo chica alimentos) city | not(puedeVencerAmenaza (consumirAlimentos chica alimentos) malo) = villanoAtacaCiudad malo city
+                                                          | otherwise = city -- ¿calculoEvac? en teoria se debia haber corrido que iba a dar un ataque.
+
 
 maraton :: Temporada -> Ciudad -> Ciudad
 maraton [] ciudad = ciudad
