@@ -26,11 +26,12 @@ data Ciudad = Ciudad {
     cantidadDeHabitantes :: Number
 } deriving (Show,Eq)
 
+type ConsumeAlimento = ChicaSuperPoderosa -> ChicaSuperPoderosa
 data Capitulo = Capitulo {
     ciudad :: Ciudad,
     villano :: Amenaza,
     chicasuperpoderosa :: ChicaSuperPoderosa,
-    alimentos :: [Persona -> Persona]
+    alimentos :: [ConsumeAlimento]
 } deriving (Show)
 type Temporada = [Capitulo]
 -- Seria mas apropiado hacer una lista de chicasuper -> chicasuper pero primero habria que hacer el resto de funciones de comer antes de ver 
@@ -108,6 +109,23 @@ springfield = Ciudad {
     nombreCiudad = "Springfield",
     cantidadDeHabitantes = 50
 }
+
+-- ====================================================================== --
+--                Capítulos
+-- ====================================================================== --
+capitulo1= Capitulo {
+    ciudad = springfield,
+    villano = princesa,
+    chicasuperpoderosa = bombon,
+    alimentos = [consumeCarameloLiquido,consumeCarameloLiquido]
+}
+capitulo2 = Capitulo {
+    ciudad = saltadilla,
+    villano = mojojojo,
+    chicasuperpoderosa = bellota,
+    alimentos = [consumeFerne,consumeSustX]
+}
+
 -- ====================================================================== --
 --                 Integrante 1
 -- ====================================================================== --
@@ -145,16 +163,24 @@ propositoEsPar = even.length.proposito
 mitadDeDanio :: Amenaza -> Number
 mitadDeDanio = (/2).danioPotencialAmenaza
 
+resistenciaMasQue :: (Amenaza -> Number) -> ChicaSuperPoderosa -> Amenaza -> Bool
+resistenciaMasQue obtenerDanio chicasuperpoderosa amenaza =
+  nivelResistencia chicasuperpoderosa > obtenerDanio amenaza
 resistenciaMasQueMitadDeDanio :: ChicaSuperPoderosa -> Amenaza -> Bool
-resistenciaMasQueMitadDeDanio chicasuperpoderosa amenaza = nivelResistencia chicasuperpoderosa > mitadDeDanio amenaza
+resistenciaMasQueMitadDeDanio = resistenciaMasQue mitadDeDanio
+
 resistenciaMasQueDanio :: ChicaSuperPoderosa -> Amenaza -> Bool
-resistenciaMasQueDanio chicasuperpoderosa amenaza = nivelResistencia chicasuperpoderosa > danioPotencialAmenaza amenaza
+resistenciaMasQueDanio = resistenciaMasQue danioPotencialAmenaza
+
+--resistenciaMasQueMitadDeDanio :: ChicaSuperPoderosa -> Amenaza -> Bool
+--resistenciaMasQueMitadDeDanio chicasuperpoderosa amenaza = nivelResistencia chicasuperpoderosa > mitadDeDanio amenaza
+--resistenciaMasQueDanio :: ChicaSuperPoderosa -> Amenaza -> Bool
+--resistenciaMasQueDanio chicasuperpoderosa amenaza = nivelResistencia chicasuperpoderosa > danioPotencialAmenaza amenaza
 
 puedeVencerAmenaza :: ChicaSuperPoderosa -> Amenaza -> Bool
 puedeVencerAmenaza chicasuperpoderosa amenaza
     | propositoEsPar amenaza = resistenciaMasQueMitadDeDanio chicasuperpoderosa amenaza
-    | not(propositoEsPar amenaza) = resistenciaMasQueDanio chicasuperpoderosa amenaza
-    | otherwise = False
+    | otherwise = resistenciaMasQueDanio chicasuperpoderosa amenaza
 
 -- ====================================================================== --
 --                 Integrante 4 
@@ -222,9 +248,9 @@ listaChicasNombreEmpizaConBYMasDeUnaHabilidad = filter (\x-> (head . nombre) x =
     para esta bebida se conoce las personas con las que se está tomando, y 
     las que no sean amigas, se agregan como tales.-}
 
-consumirSustX :: ChicaSuperPoderosa -> ChicaSuperPoderosa
+consumeSustX :: ConsumeAlimento
 --consumirSustX chicasuperpoderosa = chicasuperpoderosa { nivelResistencia = 0 }
-consumirSustX chicasuperpoderosa = modificaResistencia chicasuperpoderosa (nivelResistencia chicasuperpoderosa * (-1) )
+consumeSustX chicasuperpoderosa = modificaResistencia chicasuperpoderosa (nivelResistencia chicasuperpoderosa * (-1) )
 
 generarLista [] = []
 generarLista (y:ys) = map nombre (y:ys)
@@ -232,15 +258,15 @@ generarLista (y:ys) = map nombre (y:ys)
 sinRepetir [] = []
 sinRepetir (x:xs) = x : sinRepetir (filter (/=x) xs)
 
-nuevosAmigos :: [String] -> [Persona] -> [String]
+nuevosAmigos :: [String] -> [ChicaSuperPoderosa] -> [String]
 nuevosAmigos (x:xs) [] = x:xs
 nuevosAmigos [] (x:xs) = generarLista (x:xs)
 nuevosAmigos [] [] = []
-nuevosAmigos (x:xs) (y:ys) = sinRepetir (x:xs) ++ generarLista (y:ys)
+nuevosAmigos (x:xs) (y:ys) = sinRepetir ((x:xs) ++ generarLista (y:ys))
 
-tomarCerveza :: Persona -> [Persona] -> Persona
-tomarCerveza (Persona nom resis hab amigos) [] = Persona nom resis hab amigos
-tomarCerveza (Persona nom resis hab amigos) (x:xs)  = Persona nom resis hab (nuevosAmigos amigos (x:xs))
+consumeCerveza :: [ChicaSuperPoderosa] -> ConsumeAlimento
+consumeCerveza [] (Persona nom resis hab amigos) = Persona nom resis hab amigos
+consumeCerveza (x:xs) (Persona nom resis hab amigos) = Persona nom resis hab (nuevosAmigos amigos (x:xs))
 -- ====================================================================== --
 --                 Integrante 2 - Yendo al nutricionista
 -- ====================================================================== --
@@ -251,11 +277,11 @@ toma saborizador de Fresa, su resistencia se reduciría en 5 unidades.
 + El querido ferne’, donde al consumirlo obtiene automáticamente la habilidad 
 de “Chef de Asados”. Si ya la tiene, no se agrega.-}
 
-tomarSaborizadorDe :: String -> Persona -> Persona
-tomarSaborizadorDe sabor persona = persona {nivelResistencia= nivelResistencia persona - length sabor}
+consumeSaborizadorDe :: String -> ConsumeAlimento
+consumeSaborizadorDe sabor persona = persona {nivelResistencia= nivelResistencia persona - length sabor}
 
-tomarFerne :: Persona -> Persona
-tomarFerne persona
+consumeFerne :: ConsumeAlimento
+consumeFerne persona
     |elem "Chef de Asados"  $ habilidades persona = persona
     |otherwise = persona {habilidades =  "Chef de Asados" : habilidades persona }
 
@@ -268,6 +294,20 @@ recupera 5 puntos de resistencia a la Chica que lo consume por cada amiga que te
 perdiendo la última letra del mismo por cada shot que tome. Si toma más shots que los 
 que su nombre acepta según su longitud, simplemente queda con nombre vacío, no hace falta nada especial.-}
 
+cantAmigos :: ChicaSuperPoderosa -> Number
+cantAmigos = length.amigos
+
+recuperaResistencia:: ChicaSuperPoderosa->Number->ChicaSuperPoderosa
+recuperaResistencia persona resistencia = modificaResistencia persona (5*resistencia)
+
+consumeGatorei :: ConsumeAlimento
+consumeGatorei persona = recuperaResistencia persona $ cantAmigos persona
+
+consumeShotVodka :: ChicaSuperPoderosa -> Number -> ChicaSuperPoderosa
+consumeShotVodka chica cantidadShot = chica {nombre = nuevoNombre (nombre chica) cantidadShot}
+
+nuevoNombre :: String -> Number -> String
+nuevoNombre nombre cantidad = take (length nombre - cantidad) nombre
 -- ====================================================================== --
 --                 Integrante 4 - Yendo al nutricionista
 -- ====================================================================== --
@@ -278,10 +318,10 @@ a quien la ingiera. Si no tiene habilidades, no causa ningún efecto.-}
 modificaResistencia:: ChicaSuperPoderosa->Number->ChicaSuperPoderosa
 modificaResistencia chica resistencia = chica { nivelResistencia = nivelResistencia chica + resistencia }
 
-consumeCarameloLiquido:: ChicaSuperPoderosa -> ChicaSuperPoderosa
+consumeCarameloLiquido:: ConsumeAlimento
 consumeCarameloLiquido chica = modificaResistencia chica (-10)
 
-consumeCocucha:: ChicaSuperPoderosa->ChicaSuperPoderosa
+consumeCocucha:: ConsumeAlimento
 consumeCocucha chica
             | (not . null . habilidades) chica = chica { habilidades = (tail . habilidades) chica }
             | otherwise = chica
@@ -345,18 +385,22 @@ A su vez, los capítulos están agrupados por temporada. Una temporada no es má
 
 Se pide modelar el capítulo, la temporada y las funciones darlePlay/2 y maraton/2 que representan, respectivamente, el paso de un capítulo y de una temporada para una ciudad.
 -}
-consumirAlimentos :: ChicaSuperPoderosa -> [Persona -> Persona] -> ChicaSuperPoderosa
+consumirAlimentos :: ChicaSuperPoderosa -> [ConsumeAlimento] -> ChicaSuperPoderosa
 consumirAlimentos chica [] = chica
 consumirAlimentos chica (x:xs) = foldr ($) chica (x:xs)
+
 chequeoCiudad :: Capitulo -> Ciudad -> Bool
 chequeoCiudad (Capitulo ciudad _ _ _) (Ciudad nombrecity _) = nombreCiudad ciudad /= nombrecity
+
 darlePlay :: Capitulo -> Ciudad -> Ciudad
 darlePlay capi ciudad | chequeoCiudad capi ciudad = ciudad
                       | otherwise = reproducirCapitulo capi
+
 reproducirCapitulo :: Capitulo -> Ciudad
 reproducirCapitulo (Capitulo ciudad malo chica alimentos) | not(puedeVencerAmenaza (consumirAlimentos chica alimentos) malo) = villanoAtacaCiudad malo ciudad
                                                           | otherwise = ciudad -- ¿calculoEvac? en teoria se debia haber corrido que iba a dar un ataque.
-maraton :: [Capitulo] -> Ciudad -> Ciudad
+
+maraton :: Temporada -> Ciudad -> Ciudad
 maraton [] ciudad = ciudad
 maraton (x:xs) ciudad = foldr darlePlay ciudad (x:xs)
 -- Atencion: hace falta hacer un par de alimentos mas y ver si consumirAlimentos no da error, aparte de plantear un capitulo cada uno y armar la temporada. Por suerte el IDE no me llora nada asi que puede ser que asi como esta anda
