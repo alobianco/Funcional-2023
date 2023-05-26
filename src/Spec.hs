@@ -73,13 +73,13 @@ Mi villano Favorito casos de prueba
   describe "Tests de la segunda entrega" $ do
      context "Mi villano favorito: amenazaAtacaCiudad/2" $ do
         it "El ataque de Mojo Jojo a Saltadilla la deja con 9 habitantes restantes" $ do 
-          amenazaAtacaCiudad mojojojo saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 9}
+          villanoAtacaCiudad mojojojo saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 9}
         it "El ataque de Princesa a Saltadilla la deja con 13 habitantes restantes" $ do
-          amenazaAtacaCiudad princesa saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 13}
+          villanoAtacaCiudad princesa saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 13}
         it "El ataque de Banda Gangrena a Saltadilla la deja con 17 habitantes restantes" $ do
-          amenazaAtacaCiudad bandaGangrena saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 17}
+          villanoAtacaCiudad bandaGangrena saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 17}
         it "La Banda Gangrena ataca dos veces consecutivas a Saltadilla. La deja con 26 habitantes y su nombre cambia a Gangrena City" $ do
-          amenazaAtacaCiudad bandaGangrena (amenazaAtacaCiudad bandaGangrena saltadilla) `shouldBe` Ciudad {nombreCiudad = "Gangrena City", cantidadDeHabitantes = 26}
+          villanoAtacaCiudad bandaGangrena (villanoAtacaCiudad bandaGangrena saltadilla) `shouldBe` Ciudad {nombreCiudad = "Gangrena City", cantidadDeHabitantes = 26}
 
 {-
 darlePlay casos de prueba

@@ -288,34 +288,46 @@ consumeCocucha chica
 -- ====================================================================== --
 --                 Todos - Mi villano favorito
 -- ====================================================================== --
-{-)
-Queremos representar el efecto que tiene un villano al atacar una ciudad. Cuando un villano intenta atacar una ciudad, 
-pueda o no y sólo por motivos del rumor, su población escapa según una cantidad igual a la décima parte de su daño potencial (división entera). 
-Además, si el villano efectivamente puede atacar la misma antes de esta fuga, luego de la misma se aplica un efecto adicional 
-que depende del villano. Antes no lo sabíamos, pero los villanos pueden tener distintos efectos:
-    +Mojo Jojo hace correr el rumor de un segundo ataque, ya que asume que las Chicas Superpoderosas van a acudir más rápidamente 
-    y su objetivo es destruirlas, por lo que se fuga el doble de población.
-    +Princesa no hace nada, ya que su objetivo es ser la única Chica Superpoderosa y no le interesa tanto afectar a la ciudad.
-    +Banda Gangrena cambia el nombre de la ciudad por “Gangrena City” y duplica a la población, ya que clona a todos los habitantes 
-    para que todo sea más caótico.
-En ninguno de los casos la población puede quedar negativa, a lo sumo la ciudad quedará desierta (con población de 0).
+{-
+Queremos representar el efecto que tiene un villano al atacar una ciudad. 
+Cuando un villano intenta atacar una ciudad, pueda o no y sólo por motivos del rumor, 
+su población escapa según una cantidad igual a la décima parte de su daño potencial (división entera). 
+Además, si el villano efectivamente puede atacar la misma antes de esta fuga, 
+luego de la misma se aplica un efecto adicional que depende del villano. 
+Antes no lo sabíamos, pero los villanos pueden tener distintos efectos:
+
+    +Mojo Jojo hace correr el rumor de un segundo ataque, ya que asume que las Chicas Superpoderosas 
+    van a acudir más rápidamente y su objetivo es destruirlas, por lo que se fuga el doble de población.
+
+    +Princesa no hace nada, ya que su objetivo es ser la única Chica Superpoderosa 
+    y no le interesa tanto afectar a la ciudad.
+
+    +Banda Gangrena cambia el nombre de la ciudad por “Gangrena City” y duplica a la población, 
+    ya que clona a todos los habitantes para que todo sea más caótico.
+
+En ninguno de los casos la población puede quedar negativa, 
+a lo sumo la ciudad quedará desierta (con población de 0).
 -}
-calculoEvac :: Amenaza -> Number -> (Number -> Number) -> Number
-calculoEvac amenaza x f
-    | x - calc >= 0 = x - calc
+
+villanoAtacaCiudad :: Amenaza -> Ciudad -> Ciudad
+villanoAtacaCiudad amenaza ciudad  
+    | amenazaPuedeAtacarCiudad ciudad amenaza = efectoAdicional amenaza ciudad
+    | otherwise = ciudad {cantidadDeHabitantes= calculoEvacuacion amenaza (cantidadDeHabitantes ciudad) (*1)}
+
+efectoAdicional ::  Amenaza  -> Ciudad -> Ciudad
+efectoAdicional amenaza (Ciudad nombreCiudad cantidadDeHabitantes) 
+    | nombreA amenaza == "Mojo Jojo" = city nombreCiudad 2 1
+    | nombreA amenaza == "Banda Gangrena" = city "Gangrena City" 1 2
+    | nombreA amenaza == "Princesa" = city nombreCiudad 1 1
+    | otherwise = city nombreCiudad 1 1
+    where city nombre numA numB = Ciudad nombre (calculoEvacuacion amenaza cantidadDeHabitantes (*numA)*numB)
+
+calculoEvacuacion :: Amenaza -> Number -> (Number -> Number) -> Number
+calculoEvacuacion amenaza cantidadDeHabitantes f
+    | cantidadDeHabitantes - calc >= 0 = cantidadDeHabitantes - calc
     | otherwise = 0
     where calc = f (div (danioPotencialAmenaza amenaza) 10)
-
-amenazaAtacaCiudad :: Amenaza -> Ciudad -> Ciudad
-amenazaAtacaCiudad amenaza ciudad  | amenazaPuedeAtacarCiudad ciudad amenaza = efectoSecundario amenaza ciudad
-                            | otherwise = ciudad {cantidadDeHabitantes= calculoEvac amenaza (cantidadDeHabitantes ciudad) (*1)}
-
-efectoSecundario ::  Amenaza  -> Ciudad -> Ciudad
-efectoSecundario amenaza (Ciudad nom canthabit) | nombreA amenaza == "Mojo Jojo" = city nom 2 1
-                                                | nombreA amenaza == "Banda Gangrena" = city "Gangrena City" 1 2
-                                                | nombreA amenaza == "Princesa" = city nom 1 1
-                                                | otherwise = city nom 1 1
-                                                where city nombre numA numB = Ciudad nombre (calculoEvac amenaza canthabit (*numA)*numB)
+    
 -- ====================================================================== --
 --                 Todos - DarlePlay
 -- ====================================================================== --
@@ -342,7 +354,7 @@ darlePlay :: Capitulo -> Ciudad -> Ciudad
 darlePlay capi ciudad | chequeoCiudad capi ciudad = ciudad
                       | otherwise = reproducirCapitulo capi
 reproducirCapitulo :: Capitulo -> Ciudad
-reproducirCapitulo (Capitulo ciudad malo chica alimentos) | not(puedeVencerAmenaza (consumirAlimentos chica alimentos) malo) = amenazaAtacaCiudad malo ciudad
+reproducirCapitulo (Capitulo ciudad malo chica alimentos) | not(puedeVencerAmenaza (consumirAlimentos chica alimentos) malo) = villanoAtacaCiudad malo ciudad
                                                           | otherwise = ciudad -- ¿calculoEvac? en teoria se debia haber corrido que iba a dar un ataque.
 maraton :: [Capitulo] -> Ciudad -> Ciudad
 maraton [] ciudad = ciudad
