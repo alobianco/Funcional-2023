@@ -172,11 +172,6 @@ resistenciaMasQueMitadDeDanio = resistenciaMasQue mitadDeDanio
 resistenciaMasQueDanio :: ChicaSuperPoderosa -> Amenaza -> Bool
 resistenciaMasQueDanio = resistenciaMasQue danioPotencialAmenaza
 
---resistenciaMasQueMitadDeDanio :: ChicaSuperPoderosa -> Amenaza -> Bool
---resistenciaMasQueMitadDeDanio chicasuperpoderosa amenaza = nivelResistencia chicasuperpoderosa > mitadDeDanio amenaza
---resistenciaMasQueDanio :: ChicaSuperPoderosa -> Amenaza -> Bool
---resistenciaMasQueDanio chicasuperpoderosa amenaza = nivelResistencia chicasuperpoderosa > danioPotencialAmenaza amenaza
-
 puedeVencerAmenaza :: ChicaSuperPoderosa -> Amenaza -> Bool
 puedeVencerAmenaza chicasuperpoderosa amenaza
     | propositoEsPar amenaza = resistenciaMasQueMitadDeDanio chicasuperpoderosa amenaza
@@ -221,6 +216,9 @@ amenazaPreponderante amenazas = unwords.map nombreA.filter ((==(maximum.map nive
 -- ====================================================================== --
 {-Dada una lista de chicas y una amenaza, determinar los nombres de aquellas 
 que pueden vencer la amenaza.-}
+
+chicasPuedenVencerAmenaza :: [ChicaSuperPoderosa] -> Amenaza -> [String]
+chicasPuedenVencerAmenaza chicasuperpoderosas amenaza = map nombre $ filter (\chica -> puedeVencerAmenaza chica amenaza) chicasuperpoderosas
 
 -- ====================================================================== --
 --                 Integrante 4 - Entrada en calor
