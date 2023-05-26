@@ -163,16 +163,24 @@ propositoEsPar = even.length.proposito
 mitadDeDanio :: Amenaza -> Number
 mitadDeDanio = (/2).danioPotencialAmenaza
 
+resistenciaMasQue :: (Amenaza -> Number) -> ChicaSuperPoderosa -> Amenaza -> Bool
+resistenciaMasQue obtenerDanio chicasuperpoderosa amenaza =
+  nivelResistencia chicasuperpoderosa > obtenerDanio amenaza
 resistenciaMasQueMitadDeDanio :: ChicaSuperPoderosa -> Amenaza -> Bool
-resistenciaMasQueMitadDeDanio chicasuperpoderosa amenaza = nivelResistencia chicasuperpoderosa > mitadDeDanio amenaza
+resistenciaMasQueMitadDeDanio = resistenciaMasQue mitadDeDanio
+
 resistenciaMasQueDanio :: ChicaSuperPoderosa -> Amenaza -> Bool
-resistenciaMasQueDanio chicasuperpoderosa amenaza = nivelResistencia chicasuperpoderosa > danioPotencialAmenaza amenaza
+resistenciaMasQueDanio = resistenciaMasQue danioPotencialAmenaza
+
+--resistenciaMasQueMitadDeDanio :: ChicaSuperPoderosa -> Amenaza -> Bool
+--resistenciaMasQueMitadDeDanio chicasuperpoderosa amenaza = nivelResistencia chicasuperpoderosa > mitadDeDanio amenaza
+--resistenciaMasQueDanio :: ChicaSuperPoderosa -> Amenaza -> Bool
+--resistenciaMasQueDanio chicasuperpoderosa amenaza = nivelResistencia chicasuperpoderosa > danioPotencialAmenaza amenaza
 
 puedeVencerAmenaza :: ChicaSuperPoderosa -> Amenaza -> Bool
 puedeVencerAmenaza chicasuperpoderosa amenaza
     | propositoEsPar amenaza = resistenciaMasQueMitadDeDanio chicasuperpoderosa amenaza
-    | not(propositoEsPar amenaza) = resistenciaMasQueDanio chicasuperpoderosa amenaza
-    | otherwise = False
+    | otherwise = resistenciaMasQueDanio chicasuperpoderosa amenaza
 
 -- ====================================================================== --
 --                 Integrante 4 
