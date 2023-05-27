@@ -111,7 +111,7 @@ darlePlay casos de prueba
         context "Mojo Jojo hace correr el rumor de un segundo ataque, ya que asume que las Chicas Superpoderosas van a acudir más rápidamente y su objetivo es destruirlas." $ do
           it "Como resultado de esto se fuga el doble de población, quedando así 9 habitantes en Saltadilla." $ do 
             darlePlay capitulo2 saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 9}
-      context "Capitulo 3: La Banda Gangrena lanza su ataque en Springfield seguros de que tendran exito porque Bombon y Bellota no estan para defenderla. Burbuja sabiendo que no puede defender la ciudad sola, se junta con Silico y el Señor Cerdo a tomar unas cervezas" $ do
+      context "Capitulo 3: La Banda Gangrena lanza su ataque en Springfield seguros de que tendran exito porque Bombon y Bellota no estan para defenderla. Burbuja sabiendo que no puede defender la ciudad sola, se junta con Silico y el Señor Cerdo a tomar unas cervezas y ganar su amistad" $ do
         context "Luego se toma un Gatorei para recuperar su resistencia y vence a la Banda Gangrena." $ do
-          it "Gracias al rapido pensar de Burbuja, al tomarse unas cervecitas y hacer nuevos amigos, consigue la resistencia necesaria (gracias al Gatorei del Doctor Bilardo) para salvar nuevamente a Springfield." $ do 
+          it "Gracias al rapido pensar de Burbuja, al tomarse unas cervecitas y hacer nuevos amigos, consigue la resistencia necesaria (gracias al Gatorei del Doctor Bilardo) para salvar a Springfield." $ do 
             darlePlay capitulo3 springfield `shouldBe` Ciudad {nombreCiudad = "Springfield", cantidadDeHabitantes = 50}
