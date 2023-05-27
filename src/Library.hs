@@ -125,6 +125,12 @@ capitulo2 = Capitulo {
     chicasuperpoderosa = bellota,
     alimentos = [consumeFerne,consumeSustX]
 }
+capitulo3 = Capitulo {
+    ciudad = springfield,
+    villano = bandaGangrena,
+    chicasuperpoderosa = burbuja,
+    alimentos = [consumeGatorei, consumeCerveza [silico, seniorCerdo]]
+}
 
 -- ====================================================================== --
 --                 Integrante 1
@@ -385,7 +391,8 @@ Se pide modelar el capítulo, la temporada y las funciones darlePlay/2 y maraton
 -}
 consumirAlimentos :: ChicaSuperPoderosa -> [ConsumeAlimento] -> ChicaSuperPoderosa
 consumirAlimentos chica [] = chica
-consumirAlimentos chica (x:xs) = foldr ($) chica (x:xs)
+consumirAlimentos chica (x:xs) = foldr ($) chica (x:xs) 
+--Este consumir alimentos los consume del ultimo al primero, por si causa un error, a mi me causaba en el capitulo 3 planteado, dejo el comentario informativo
 
 chequeoCiudad :: Capitulo -> Ciudad -> Bool
 chequeoCiudad (Capitulo ciudad _ _ _) (Ciudad nombrecity _) = nombreCiudad ciudad /= nombrecity
