@@ -364,10 +364,8 @@ efectoAdicional amenaza (Ciudad nombreCiudad cantidadDeHabitantes)
     where city nombre numA numB = Ciudad nombre (calculoEvacuacion amenaza cantidadDeHabitantes (*numA) *numB)
 
 calculoEvacuacion :: Amenaza -> Number -> (Number -> Number) -> Number
-calculoEvacuacion amenaza cantidadDeHabitantes f
-    | cantidadDeHabitantes - calc >= 0 = cantidadDeHabitantes - calc
-    | otherwise = 0
-    where calc = f (div (danioPotencialAmenaza amenaza) 10)
+calculoEvacuacion amenaza cantidadDeHabitantes f = max 0 $ cantidadDeHabitantes - calc
+                                                 where calc = f (div (danioPotencialAmenaza amenaza) 10)
 
 -- ====================================================================== --
 --                 Todos - DarlePlay
