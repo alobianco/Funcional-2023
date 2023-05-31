@@ -19,7 +19,7 @@ data Amenaza = Amenaza{
     proposito :: String,
     nivelDePoder :: Number,
     debilidades :: [String]
-} deriving (Show)
+} deriving (Show,Eq)
 
 data Ciudad = Ciudad {
     nombreCiudad :: String,
@@ -357,9 +357,9 @@ villanoAtacaCiudad amenaza ciudad
 
 efectoAdicional ::  Amenaza  -> Ciudad -> Ciudad
 efectoAdicional amenaza (Ciudad nombreCiudad cantidadDeHabitantes)
-    | nombreA amenaza == "Mojo Jojo" = city nombreCiudad 2 1
-    | nombreA amenaza == "Banda Gangrena" = city "Gangrena City" 1 2
-    | nombreA amenaza == "Princesa" = city nombreCiudad 1 1
+    | amenaza == mojojojo = city nombreCiudad 2 1
+    | amenaza == bandaGangrena = city "Gangrena City" 1 2
+    | amenaza == princesa = city nombreCiudad 1 1
     | otherwise = city nombreCiudad 1 1
     where city nombre numA numB = Ciudad nombre (calculoEvacuacion amenaza cantidadDeHabitantes (*numA) *numB)
 
