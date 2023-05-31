@@ -224,7 +224,7 @@ amenazaPreponderante amenazas = unwords.map nombreA.filter ((==maximoPoder).nive
 que pueden vencer la amenaza.-}
 
 chicasPuedenVencerAmenaza :: [ChicaSuperPoderosa] -> Amenaza -> [String]
-chicasPuedenVencerAmenaza chicasuperpoderosas amenaza = map nombre $ filter (`puedeVencerAmenaza` amenaza) chicasuperpoderosas
+chicasPuedenVencerAmenaza chicasuperpoderosas amenaza = map nombre $ filter (flip puedeVencerAmenaza amenaza) chicasuperpoderosas
 
 -- ====================================================================== --
 --                 Integrante 4 - Entrada en calor
@@ -301,11 +301,8 @@ que su nombre acepta según su longitud, simplemente queda con nombre vacío, no
 cantAmigos :: ChicaSuperPoderosa -> Number
 cantAmigos = length.amigos
 
-recuperaResistencia:: ChicaSuperPoderosa->Number->ChicaSuperPoderosa
-recuperaResistencia persona resistencia = modificaResistencia persona (5*resistencia)
-
 consumeGatorei :: ConsumeAlimento
-consumeGatorei persona = recuperaResistencia persona $ cantAmigos persona
+consumeGatorei persona = modificaResistencia persona (5*cantAmigos persona)
 
 consumeShotVodka :: Number -> ConsumeAlimento
 consumeShotVodka cantidadShot chica = chica {nombre = nuevoNombre (nombre chica) cantidadShot}
@@ -409,5 +406,6 @@ reproducirCapitulo (Capitulo ciudad malo chica alimentos) city | not(puedeVencer
 maraton :: Temporada -> Ciudad -> Ciudad
 maraton [] ciudad = ciudad
 maraton (x:xs) ciudad = foldr darlePlay ciudad (x:xs)
+ 
 -- Atencion: hace falta hacer un par de alimentos mas y ver si consumirAlimentos no da error, aparte de plantear un capitulo cada uno y armar la temporada. Por suerte el IDE no me llora nada asi que puede ser que asi como esta anda
 -- Rta: consumirAlimentos no da error
