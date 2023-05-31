@@ -213,8 +213,8 @@ amenazaInvulnerable chicasuperpoderosa amenaza = not.or $ chequeoElem (habilidad
 {-Dada una lista de amenazas, determinar cuál es la amenaza preponderante, 
 que es aquella que tenga más nivel de poder.-}
 
-amenazaPreponderante :: [Amenaza] -> String
-amenazaPreponderante amenazas = unwords.map nombreA.filter ((==maximoPoder).nivelDePoder) $amenazas
+amenazaPreponderante :: [Amenaza] -> Amenaza
+amenazaPreponderante amenazas = head.filter ((==maximoPoder).nivelDePoder) $amenazas
                                 where maximoPoder = maximum.map nivelDePoder $ amenazas
 
 -- ====================================================================== --
