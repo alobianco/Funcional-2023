@@ -199,14 +199,11 @@ amenazaDeNivelAlto amenaza = operacionDeDebilidades even amenaza
  {-Determinar si una amenaza es invulnerable para una chica, lo cual ocurre 
  si la chica no tiene habilidades que sean debilidad de la amenaza-}
 
-chequeoElem :: [String] -> [String] -> [Bool]
-chequeoElem [] _ = []
-chequeoElem _ [] = []
-chequeoElem (x:xs) (y:ys) = elem x (y:ys) : chequeoElem xs (y:ys)
-
-amenazaInvulnerable :: ChicaSuperPoderosa -> Amenaza -> Bool
-amenazaInvulnerable chicasuperpoderosa amenaza = not.or $ chequeoElem (habilidades chicasuperpoderosa) (debilidades amenaza)
-
+amenazaInvulnerable :: Persona -> Amenaza -> Bool
+amenazaInvulnerable (Persona _ _ habilidades _) (Amenaza _ _ _ debilidades) = 
+    not $ foldl chequeoVulnerabilidad False habilidades 
+    where chequeoVulnerabilidad acc habilidade = acc || elem habilidade debilidades
+    
 -- ====================================================================== --
 --                 Integrante 2 - Entrada en calor
 -- ====================================================================== --
