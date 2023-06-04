@@ -253,24 +253,18 @@ listaChicasNombreEmpizaConBYMasDeUnaHabilidad = filter (\x-> (head . nombre) x =
     las que no sean amigas, se agregan como tales.-}
 
 consumeSustX :: ConsumeAlimento
---consumirSustX chicasuperpoderosa = chicasuperpoderosa { nivelResistencia = 0 }
 consumeSustX chicasuperpoderosa = modificaResistencia chicasuperpoderosa (nivelResistencia chicasuperpoderosa * (-1) )
-
-generarLista [] = []
-generarLista (y:ys) = map nombre (y:ys)
-
-sinRepetir [] = []
-sinRepetir (x:xs) = x : sinRepetir (filter (/=x) xs)
-
-nuevosAmigos :: [String] -> [ChicaSuperPoderosa] -> [String]
-nuevosAmigos (x:xs) [] = x:xs
-nuevosAmigos [] (x:xs) = generarLista (x:xs)
-nuevosAmigos [] [] = []
-nuevosAmigos (x:xs) (y:ys) = sinRepetir ((x:xs) ++ generarLista (y:ys))
 
 consumeCerveza :: [ChicaSuperPoderosa] -> ConsumeAlimento
 consumeCerveza [] (Persona nom resis hab amigos) = Persona nom resis hab amigos
-consumeCerveza (x:xs) (Persona nom resis hab amigos) = Persona nom resis hab (nuevosAmigos amigos (x:xs))
+consumeCerveza (x:xs) (Persona nom resis hab amigos) = Persona nom resis hab (agregarSinRepetir amigos $ map nombre (x:xs))
+
+agregarSinRepetir base agregados = 
+    foldl agregar base agregados
+    where 
+        agregar base agregado
+            |notElem agregado base = agregado : base
+            |otherwise = base
 -- ====================================================================== --
 --                 Integrante 2 - Yendo al nutricionista
 -- ====================================================================== --
