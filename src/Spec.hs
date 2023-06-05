@@ -106,12 +106,12 @@ darlePlay casos de prueba
       context "Capitulo 1: Princesa intenta atacar Springfield. Bombon falla al detenerla por haber consumido dos caramelos liquidos" $ do
         context "Sin embargo Princesa no es lo suficientemente fuerte para atacar una ciudad de otra animacion como Springfield" $ do
           it "Como resultado la paz sigue en Springfield y nadie se entero de nada (salvo de una niña gritona disfrazada de abeja que tuvo que ser llevada a la carcel estatal por 8 policias o asi dicen los rumores)" $ do
-            darlePlay capitulo1 springfield `shouldBe` Ciudad { nombreCiudad = "Springfield" ,cantidadDeHabitantes = 42}
+            darlePlay springfield capitulo1 `shouldBe` Ciudad { nombreCiudad = "Springfield" ,cantidadDeHabitantes = 42}
       context "Capitulo 2: Mojo Jojo intenta atacar Saltadilla. Bellota no puede defenderla por haber consumido ferne' y la sustancia X." $ do
         context "Mojo Jojo hace correr el rumor de un segundo ataque, ya que asume que las Chicas Superpoderosas van a acudir más rápidamente y su objetivo es destruirlas." $ do
           it "Como resultado de esto se fuga el doble de población, quedando así 9 habitantes en Saltadilla." $ do 
-            darlePlay capitulo2 saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 9}
+            darlePlay saltadilla capitulo2 `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 9}
       context "Capitulo 3: La Banda Gangrena lanza su ataque en Springfield seguros de que tendran exito porque Bombon y Bellota no estan para defenderla. Burbuja sabiendo que no puede defender la ciudad sola, se junta con Silico y el Señor Cerdo a tomar unas cervezas y ganar su amistad" $ do
         context "Luego se toma un Gatorei para recuperar su resistencia y vence a la Banda Gangrena." $ do
           it "Gracias al rapido pensar de Burbuja, al tomarse unas cervecitas y hacer nuevos amigos, consigue la resistencia necesaria (gracias al Gatorei del Doctor Bilardo) para salvar a Springfield." $ do 
-            darlePlay capitulo3 springfield `shouldBe` Ciudad {nombreCiudad = "Springfield", cantidadDeHabitantes = 50}
+            darlePlay springfield capitulo3 `shouldBe` Ciudad {nombreCiudad = "Springfield", cantidadDeHabitantes = 50}

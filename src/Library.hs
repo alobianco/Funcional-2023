@@ -25,16 +25,16 @@ data Ciudad = Ciudad {
     nombreCiudad :: String,
     cantidadDeHabitantes :: Number
 } deriving (Show,Eq)
-
-type ConsumeAlimento = ChicaSuperPoderosa -> ChicaSuperPoderosa
 data Capitulo = Capitulo {
     ciudad :: Ciudad,
     villano :: Amenaza,
     chicasuperpoderosa :: ChicaSuperPoderosa,
     alimentos :: [ConsumeAlimento]
 } deriving (Show)
+
+type ConsumeAlimento = ChicaSuperPoderosa -> ChicaSuperPoderosa
 type Temporada = [Capitulo]
--- Seria mas apropiado hacer una lista de chicasuper -> chicasuper pero primero habria que hacer el resto de funciones de comer antes de ver 
+
 -- ====================================================================== --
 --                 Chicas Super Poderosas
 -- ====================================================================== --
@@ -253,9 +253,11 @@ consumeSustX :: ConsumeAlimento
 consumeSustX chicasuperpoderosa = modificaResistencia chicasuperpoderosa (nivelResistencia chicasuperpoderosa * (-1) )
 
 consumeCerveza :: [ChicaSuperPoderosa] -> ConsumeAlimento
-consumeCerveza [] (Persona nom resis hab amigos) = Persona nom resis hab amigos
-consumeCerveza (x:xs) (Persona nom resis hab amigos) = Persona nom resis hab (agregarSinRepetir amigos $ map nombre (x:xs))
+consumeCerveza [] chicasuperpoderosa = chicasuperpoderosa
+consumeCerveza chicasSuperPoderosas (Persona nom resis hab amigos) = 
+    Persona nom resis hab (agregarSinRepetir amigos $ map nombre chicasSuperPoderosas)
 
+agregarSinRepetir :: Eq a => [a] -> [a] -> [a]
 agregarSinRepetir base agregados = 
     foldl agregar base agregados
     where 
@@ -375,26 +377,23 @@ A su vez, los capítulos están agrupados por temporada. Una temporada no es má
 
 Se pide modelar el capítulo, la temporada y las funciones darlePlay/2 y maraton/2 que representan, respectivamente, el paso de un capítulo y de una temporada para una ciudad.
 -}
+
 consumirAlimentos :: ChicaSuperPoderosa -> [ConsumeAlimento] -> ChicaSuperPoderosa
 consumirAlimentos chica [] = chica
-consumirAlimentos chica (x:xs) = foldr ($) chica (x:xs) 
---Este consumir alimentos los consume del ultimo al primero, por si causa un error, a mi me causaba en el capitulo 3 planteado, dejo el comentario informativo
+consumirAlimentos chica consumicion = foldr ($) chica consumicion 
 
 chequeoCiudad :: Capitulo -> Ciudad -> Bool
 chequeoCiudad (Capitulo ciudad _ _ _) (Ciudad nombrecity _) = nombreCiudad ciudad /= nombrecity
 
-darlePlay :: Capitulo -> Ciudad -> Ciudad
-darlePlay capi ciudad | chequeoCiudad capi ciudad = ciudad
+darlePlay :: Ciudad -> Capitulo -> Ciudad
+darlePlay ciudad capi | chequeoCiudad capi ciudad = ciudad
                       | otherwise = reproducirCapitulo capi ciudad
 
 reproducirCapitulo :: Capitulo -> Ciudad -> Ciudad
-reproducirCapitulo (Capitulo ciudad malo chica alimentos) city | not(puedeVencerAmenaza (consumirAlimentos chica alimentos) malo) = villanoAtacaCiudad malo city
-                                                          | otherwise = city -- ¿calculoEvac? en teoria se debia haber corrido que iba a dar un ataque.
-
+reproducirCapitulo (Capitulo _ malo chica alimentos) ciudad 
+        | not(puedeVencerAmenaza (consumirAlimentos chica alimentos) malo) = villanoAtacaCiudad malo ciudad
+        | otherwise = ciudad 
 
 maraton :: Temporada -> Ciudad -> Ciudad
 maraton [] ciudad = ciudad
-maraton (x:xs) ciudad = foldr darlePlay ciudad (x:xs)
- 
--- Atencion: hace falta hacer un par de alimentos mas y ver si consumirAlimentos no da error, aparte de plantear un capitulo cada uno y armar la temporada. Por suerte el IDE no me llora nada asi que puede ser que asi como esta anda
--- Rta: consumirAlimentos no da error
+maraton temporada ciudad = foldl darlePlay ciudad temporada
