@@ -367,7 +367,7 @@ efectoAdicional amenaza (Ciudad nombreCiudad cantidadDeHabitantes)
 calculoEvacuacion :: Amenaza -> Number -> (Number -> Number) -> Number
 calculoEvacuacion amenaza cantidadDeHabitantes f = max 0 $ cantidadDeHabitantes - calc
                                                  where calc = f (div (danioPotencialAmenaza amenaza) 10)
-{-Otra version alternativa mas Expresiva
+--Otra version alternativa mas Expresiva
 
 villanoAtacaCiudad' amenaza ciudad
     |amenazaPuedeAtacarCiudad ciudad amenaza = aplicaEfectoAdicional amenaza ciudad
@@ -392,7 +392,7 @@ aplicaEfectoAdicional amenaza ciudad
                 {
                     cantidadDeHabitantes = max 0 $ cantidadDeHabitantes ciudad - cantidadPoblacionEscapaPorMotivoDeRumor amenaza 
                 }
--}
+
 
 -- ====================================================================== --
 --                 Todos - DarlePlay
