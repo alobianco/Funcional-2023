@@ -102,24 +102,46 @@ darlePlay casos de prueba
 -El grupo debe plantear una temporada y armar dos casos de prueba para una maratón de la misma, con las 2 ciudades.
 -Para armar los distintos casos, se pueden usar valores de los puntos anteriores.
 -}
-    describe "¿Vemos uno mas?: darlePlay/2 y maraton/2" $do
-      context "Capitulo 1: Princesa intenta atacar Springfield. Bombon falla al detenerla por haber consumido dos caramelos liquidos" $ do
+    describe "¿Vemos uno mas?: darlePlay/2" $do
+      context "Capitulo 1, Primera Parte: Princesa intenta atacar Springfield. Bombon falla al detenerla por haber consumido dos caramelos liquidos" $ do
         context "Sin embargo Princesa no es lo suficientemente fuerte para atacar una ciudad de otra animacion como Springfield" $ do
           it "Como resultado la paz sigue en Springfield y nadie se entero de nada (salvo de una niña gritona disfrazada de abeja que tuvo que ser llevada a la carcel estatal por 8 policias o asi dicen los rumores)" $ do
             darlePlay springfield capitulo1 `shouldBe` Ciudad { nombreCiudad = "Springfield" ,cantidadDeHabitantes = 42}
-      context "Capitulo 2: Mojo Jojo intenta atacar Saltadilla. Bellota no puede defenderla por haber consumido ferne' y la sustancia X." $ do
+      context "Capitulo 1, Segunda Parte: Princesa intenta atacar Saltadilla" $ do
+          context "Princesa no dudó en cambiar de plan al verse incapaz de atacar Springfield, pasando a la acción en Saltadilla." $ do
+            it "Pero Saltadilla se mantiene a salvo y sin rumores gracias al poder del guion." $ do
+              darlePlay saltadilla capitulo1 `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 21}
+      context "Capitulo 2, Primera Parte: Mojo Jojo intenta atacar Saltadilla. Bellota no puede defenderla por haber consumido ferne' y la sustancia X." $ do
         context "Mojo Jojo hace correr el rumor de un segundo ataque, ya que asume que las Chicas Superpoderosas van a acudir más rápidamente y su objetivo es destruirlas." $ do
-          it "Como resultado de esto se fuga el doble de población, quedando así 9 habitantes en Saltadilla." $ do 
+          it "Como resultado de esto se fuga el doble de población, quedando así solo 9 habitantes en Saltadilla." $ do 
             darlePlay saltadilla capitulo2 `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 9}
-      context "Capitulo 3: La Banda Gangrena lanza su ataque en Springfield seguros de que tendran exito porque Bombon y Bellota no estan para defenderla. Burbuja sabiendo que no puede defender la ciudad sola, se junta con Silico y el Señor Cerdo a tomar unas cervezas y ganar su amistad" $ do
+      context "Capitulo 2, Segunda Parte: Mojo Jojo intenta atacar Springfield" $ do
+          context "Mojo Jojo, insatisfecho al no haber aparecido ninguna Chica Superpoderosa, decide dirigirse a una famosa ciudad llamada 'Springfield'." $ do
+            it "Lo que no sabía es que sería incapaz de encontrarla. Nuevamente un capitulo con final feliz... o al menos lo es para Springfield que no se entera de nada." $ do
+              darlePlay springfield capitulo2 `shouldBe` Ciudad {nombreCiudad = "Springfield", cantidadDeHabitantes = 50}
+      context "Capitulo 3, Primera Parte: La Banda Gangrena lanza su ataque en Springfield seguros de que tendran exito porque Bombon y Bellota no estan para defenderla. Burbuja sabiendo que no puede defender la ciudad sola, se junta con Silico y el Señor Cerdo a tomar unas cervezas y ganar su amistad" $ do
         context "Luego se toma un Gatorei para recuperar su resistencia y vence a la Banda Gangrena." $ do
           it "Gracias al rapido pensar de Burbuja, al tomarse unas cervecitas y hacer nuevos amigos, consigue la resistencia necesaria (gracias al Gatorei del Doctor Bilardo) para salvar a Springfield." $ do 
             darlePlay springfield capitulo3 `shouldBe` Ciudad {nombreCiudad = "Springfield", cantidadDeHabitantes = 50}
-      context "Capitulo 4: Mojo Jojo intenta atacar Saltadilla" $ do
+      context "Capitulo 3, Segunda Parte: La Banda Gangrena intenta atacar Saltadilla. Apenas habían podido escapar de ser arrestados luego de ser vencidos por Burbuja y sus amigos. Aún estándo con pocas fuerzas para caminar, deciden atacar Saltadilla sabiendo que ahora sí no habrá nadie allí para defenderla." $ do
+        context "Sin recorrer la mitad del camino a la ciudad, la Banda Gangrena no puede más y se desploma. ¿En qué pensaban?" $ do
+          it "Cuando despiertan se dan cuenta que están tras las rejas. Estaban en Saltadilla, una ciudad en donde reinaba la paz y el orden... Al menos por ahora" $ do
+            darlePlay saltadilla capitulo3 `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 21}
+      context "Capitulo 4, Primera Parte: Mojo Jojo intenta atacar Saltadilla" $ do
           context "Ante esta situación Bombon se toma una cocucha para no distraerse escuchando a Luciano Pereyra. Se equivoca de botella y toma un poco de sustancia x que la deja sin resistencia." $ do
             it "Como Bombon no puede vencer a Mojo Jojo entonces este logra atacar la ciudad de Saltadilla con exito." $ do 
               darlePlay saltadilla capitulo4 `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 9}
-      context "Capitulo 4: Mojo Jojo intenta atacar Springfield" $ do
-          context "Como Springfield no es mencionado en este capitulo" $ do
-            it "Entonces Springfield no es atacada" $ do 
-              darlePlay springfield capitulo4 `shouldBe` Ciudad {nombreCiudad = "Springfield", cantidadDeHabitantes = 50}
+      context "Capitulo 4, Segunda Parte: Mojo Jojo intenta atacar Springfield" $ do
+          context "Mojo Jojo estaba cansado de esperar. Habían pasado horas y no había señales de bellota o burbuja. Decide no dejar pasar un segundo más y atacar Springfield, dónde creía se encontraban las otras dos Chicas Superpoderosas" $ do
+            context "Él había aprendido de sus errores, y esta vez tenía una máquina que lo teletransportaba directamente a esta ciudad." $ do
+              it "Lo que no sabía es que su destino era no poder llegar a Springfield. Al encenderla algo sale mal y su maquina lo lleva a una isla totalmente desierta. ¿Qué será de Mojo Jojo?" $ do
+                darlePlay springfield capitulo4 `shouldBe` Ciudad {nombreCiudad = "Springfield", cantidadDeHabitantes = 50}
+    describe "¿Vemos uno mas?: maraton/2" $do  
+      context "Ahora que tenemos nuestros capítulos podemos hacer la Primera Temporada de la serie!! Hagamos una prueba de cómo quedarían las ciudades al final de la temporada" $ do
+        context "Primero vamos con Saltadilla. Se ve afectada por Mojo Jojo en el capítulo 2, quedando con 9 habitantes. Luego tenemos un nuevo ataque de Mojo Jojo en el capítulo 4." $ do 
+          it "Resulta que al final de la temporada no quedan habitantes." $ do
+            maraton temporada1 saltadilla `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 0}
+      context "Puede que tengamos que hacer cambios en el guión, no puede ser que no queden habitantes. ¿Quién aprobó esto?" $ do
+        context "Y ahora Springfield. En el capítulo 1, el rumor del ataque de princesa deja a la ciudad con 42 habitantes. Y luego... ¿Nunca más es afectada? Veo un poco de favoritismo aquí." $ do 
+          it "Su población al final de la temporada es de 42 habitantes." $ do
+            maraton temporada1 springfield `shouldBe` Ciudad {nombreCiudad = "Springfield", cantidadDeHabitantes = 42}

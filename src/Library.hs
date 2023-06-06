@@ -139,6 +139,8 @@ capitulo4 = Capitulo {
     alimentos = [consumeCocucha, consumeSustX]
 }
 
+temporada1 :: Temporada
+temporada1 = [capitulo1,capitulo2,capitulo3,capitulo4]
 
 -- ====================================================================== --
 --                 Integrante 1
