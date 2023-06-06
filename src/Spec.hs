@@ -115,3 +115,11 @@ darlePlay casos de prueba
         context "Luego se toma un Gatorei para recuperar su resistencia y vence a la Banda Gangrena." $ do
           it "Gracias al rapido pensar de Burbuja, al tomarse unas cervecitas y hacer nuevos amigos, consigue la resistencia necesaria (gracias al Gatorei del Doctor Bilardo) para salvar a Springfield." $ do 
             darlePlay springfield capitulo3 `shouldBe` Ciudad {nombreCiudad = "Springfield", cantidadDeHabitantes = 50}
+      context "Capitulo 4: Mojo Jojo intenta atacar Saltadilla" $ do
+          context "Ante esta situación Bombon se toma una cocucha para no distraerse escuchando a Luciano Pereyra. Se equivoca de botella y toma un poco de sustancia x que la deja sin resistencia." $ do
+            it "Como Bombon no puede vencer a Mojo Jojo entonces este logra atacar la ciudad de Saltadilla con exito." $ do 
+              darlePlay saltadilla capitulo4 `shouldBe` Ciudad {nombreCiudad = "Saltadilla", cantidadDeHabitantes = 9}
+      context "Capitulo 4: Mojo Jojo intenta atacar Springfield" $ do
+          context "Como Springfield no es mencionado en este capitulo" $ do
+            it "Entonces Springfield no es atacada" $ do 
+              darlePlay springfield capitulo4 `shouldBe` Ciudad {nombreCiudad = "Springfield", cantidadDeHabitantes = 50}

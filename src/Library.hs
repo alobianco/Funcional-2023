@@ -132,6 +132,14 @@ capitulo3 = Capitulo {
     alimentos = [consumeGatorei, consumeCerveza [silico, seniorCerdo]]
 }
 
+capitulo4 = Capitulo {
+    ciudad = saltadilla,
+    villano = mojojojo,
+    chicasuperpoderosa = bombon,
+    alimentos = [consumeCocucha, consumeSustX]
+}
+
+
 -- ====================================================================== --
 --                 Integrante 1
 -- ====================================================================== --
@@ -359,6 +367,32 @@ efectoAdicional amenaza (Ciudad nombreCiudad cantidadDeHabitantes)
 calculoEvacuacion :: Amenaza -> Number -> (Number -> Number) -> Number
 calculoEvacuacion amenaza cantidadDeHabitantes f = max 0 $ cantidadDeHabitantes - calc
                                                  where calc = f (div (danioPotencialAmenaza amenaza) 10)
+{-Otra version alternativa mas Expresiva
+
+villanoAtacaCiudad' amenaza ciudad
+    |amenazaPuedeAtacarCiudad ciudad amenaza = aplicaEfectoAdicional amenaza ciudad
+    |otherwise = ciudad 
+                {
+                    cantidadDeHabitantes = cantidadDeHabitantes ciudad - cantidadPoblacionEscapaPorMotivoDeRumor amenaza 
+                }
+
+cantidadPoblacionEscapaPorMotivoDeRumor = flip div 10 . danioPotencialAmenaza 
+
+aplicaEfectoAdicional amenaza ciudad
+        | amenaza == mojojojo = ciudad 
+                {
+                    cantidadDeHabitantes = max 0 $ cantidadDeHabitantes ciudad - cantidadPoblacionEscapaPorMotivoDeRumor amenaza * 2
+                }
+        | amenaza == bandaGangrena = ciudad 
+                {
+                    nombreCiudad = "Gangrena City", 
+                    cantidadDeHabitantes = (*2) $  max 0 $ cantidadDeHabitantes ciudad - cantidadPoblacionEscapaPorMotivoDeRumor amenaza 
+                }
+        | otherwise = ciudad 
+                {
+                    cantidadDeHabitantes = max 0 $ cantidadDeHabitantes ciudad - cantidadPoblacionEscapaPorMotivoDeRumor amenaza 
+                }
+-}
 
 -- ====================================================================== --
 --                 Todos - DarlePlay
