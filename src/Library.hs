@@ -359,12 +359,13 @@ villanoAtacaCiudad amenaza ciudad
     | otherwise = ciudad {cantidadDeHabitantes= calculoEvacuacion amenaza (cantidadDeHabitantes ciudad) (*1)}
 
 efectoAdicional ::  Amenaza  -> Ciudad -> Ciudad
-efectoAdicional amenaza@(Amenaza nombre _ _ _) (Ciudad nombreCiudad cantidadDeHabitantes)
-    | nombre == "Mojo Jojo" = city nombreCiudad 2 1
-    | nombre == "Banda Gangrena" = city "Gangrena City" 1 2
-    | nombre == "Princesa" = city nombreCiudad 1 1
-    | otherwise = city nombreCiudad 1 1
-    where city nombre numA numB = Ciudad nombre (calculoEvacuacion amenaza cantidadDeHabitantes (*numA) *numB)
+efectoAdicional amenaza@(Amenaza "Mojo Jojo" _ _ _) (Ciudad nombre cantDeHabitantes) = 
+                        Ciudad nombre (calculoEvacuacion amenaza cantDeHabitantes (*2) *1)
+efectoAdicional amenaza@(Amenaza "Banda Gangrena" _ _ _) (Ciudad nombre cantDeHabitantes) = 
+                         Ciudad "Gangrena City" (calculoEvacuacion amenaza cantDeHabitantes (*1) *2)
+efectoAdicional amenaza@(Amenaza "Princesa" _ _ _) (Ciudad nombre cantDeHabitantes) = 
+                         Ciudad nombre (calculoEvacuacion amenaza cantDeHabitantes (*1) *1)
+
 
 calculoEvacuacion :: Amenaza -> Number -> (Number -> Number) -> Number
 calculoEvacuacion amenaza cantidadDeHabitantes f = max 0 $ cantidadDeHabitantes - calc
